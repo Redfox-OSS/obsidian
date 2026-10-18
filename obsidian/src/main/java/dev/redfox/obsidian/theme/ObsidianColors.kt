@@ -1,6 +1,7 @@
 package dev.redfox.obsidian.theme
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -10,7 +11,7 @@ import androidx.compose.ui.graphics.lerp
  * [ObsidianNeutrals] ramp, accent roles from an [ObsidianAccent]. Build with [obsidianColors].
  */
 @Immutable
-data class ObsidianColors(
+public data class ObsidianColors(
     // Surfaces
     val background: Color,
     /** Primary card surface (cards, settings sections). */
@@ -62,7 +63,7 @@ data class ObsidianColors(
  * hue to show in an accent picker.
  */
 @Immutable
-data class ObsidianAccent(
+public data class ObsidianAccent(
     val name: String,
     val main: Color,
     val light: Color,
@@ -70,20 +71,20 @@ data class ObsidianAccent(
     val onLight: Color,
     val swatch: Color = main,
 ) {
-    companion object {
-        val Crimson = ObsidianAccent("Crimson", Color(0xFFFF535A), Color(0xFFFFB3B0), Color(0xFF5B000D), Color(0xFF680010), Color(0xFFFF2A42))
-        val Electric = ObsidianAccent("Electric", Color(0xFF3D9BFF), Color(0xFFA9CEFF), Color(0xFF002A55), Color(0xFF00315F), Color(0xFF0084FF))
-        val Solar = ObsidianAccent("Solar", Color(0xFFFFB800), Color(0xFFFFD983), Color(0xFF3F2B00), Color(0xFF402D00), Color(0xFFFFB800))
-        val Emerald = ObsidianAccent("Emerald", Color(0xFF21D07A), Color(0xFF8DF3B7), Color(0xFF00391B), Color(0xFF003920), Color(0xFF00E676))
-        val Luminous = ObsidianAccent("Luminous", Color(0xFFEDEDF0), Color(0xFFFFFFFF), Color(0xFF1A1A1D), Color(0xFF1A1A1D), Color(0xFFFFFFFF))
+    public companion object {
+        public val Crimson: ObsidianAccent = ObsidianAccent("Crimson", Color(0xFFFF535A), Color(0xFFFFB3B0), Color(0xFF5B000D), Color(0xFF680010), Color(0xFFFF2A42))
+        public val Electric: ObsidianAccent = ObsidianAccent("Electric", Color(0xFF3D9BFF), Color(0xFFA9CEFF), Color(0xFF002A55), Color(0xFF00315F), Color(0xFF0084FF))
+        public val Solar: ObsidianAccent = ObsidianAccent("Solar", Color(0xFFFFB800), Color(0xFFFFD983), Color(0xFF3F2B00), Color(0xFF402D00), Color(0xFFFFB800))
+        public val Emerald: ObsidianAccent = ObsidianAccent("Emerald", Color(0xFF21D07A), Color(0xFF8DF3B7), Color(0xFF00391B), Color(0xFF003920), Color(0xFF00E676))
+        public val Luminous: ObsidianAccent = ObsidianAccent("Luminous", Color(0xFFEDEDF0), Color(0xFFFFFFFF), Color(0xFF1A1A1D), Color(0xFF1A1A1D), Color(0xFFFFFFFF))
 
-        val Presets: List<ObsidianAccent> = listOf(Crimson, Electric, Solar, Emerald, Luminous)
+        public val Presets: List<ObsidianAccent> = listOf(Crimson, Electric, Solar, Emerald, Luminous)
     }
 }
 
 /** A dark neutral ramp, from the page [background] up to the highest [tileHigh] surface. */
 @Immutable
-data class ObsidianNeutrals(
+public data class ObsidianNeutrals(
     val name: String,
     val background: Color,
     val card: Color,
@@ -91,12 +92,12 @@ data class ObsidianNeutrals(
     val tile: Color,
     val tileHigh: Color,
 ) {
-    companion object {
-        val Dark = ObsidianNeutrals("Dark", Color(0xFF131316), Color(0xFF201F22), Color(0xFF1C1B1E), Color(0xFF2A2A2D), Color(0xFF353438))
-        val Darker = ObsidianNeutrals("Darker", Color(0xFF0E0E11), Color(0xFF1A191D), Color(0xFF161519), Color(0xFF242328), Color(0xFF2F2E33))
-        val Amoled = ObsidianNeutrals("AMOLED", Color(0xFF000000), Color(0xFF121114), Color(0xFF0D0C0F), Color(0xFF1E1D21), Color(0xFF29282D))
+    public companion object {
+        public val Dark: ObsidianNeutrals = ObsidianNeutrals("Dark", Color(0xFF131316), Color(0xFF201F22), Color(0xFF1C1B1E), Color(0xFF2A2A2D), Color(0xFF353438))
+        public val Darker: ObsidianNeutrals = ObsidianNeutrals("Darker", Color(0xFF0E0E11), Color(0xFF1A191D), Color(0xFF161519), Color(0xFF242328), Color(0xFF2F2E33))
+        public val Amoled: ObsidianNeutrals = ObsidianNeutrals("AMOLED", Color(0xFF000000), Color(0xFF121114), Color(0xFF0D0C0F), Color(0xFF1E1D21), Color(0xFF29282D))
 
-        val Presets: List<ObsidianNeutrals> = listOf(Dark, Darker, Amoled)
+        public val Presets: List<ObsidianNeutrals> = listOf(Dark, Darker, Amoled)
     }
 }
 
@@ -104,7 +105,7 @@ data class ObsidianNeutrals(
 private val SecondaryTextBase = Color(0xFFCBC7CC)
 
 /** Derives the full token set from an accent and a neutral ramp. */
-fun obsidianColors(
+public fun obsidianColors(
     accent: ObsidianAccent = ObsidianAccent.Crimson,
     neutrals: ObsidianNeutrals = ObsidianNeutrals.Dark,
 ): ObsidianColors {
@@ -141,4 +142,4 @@ fun obsidianColors(
     )
 }
 
-val LocalObsidianColors = staticCompositionLocalOf { obsidianColors() }
+public val LocalObsidianColors: ProvidableCompositionLocal<ObsidianColors> = staticCompositionLocalOf { obsidianColors() }

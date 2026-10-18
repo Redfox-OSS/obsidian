@@ -33,7 +33,7 @@ includeBuild("../obsidian")
 
 ```kotlin
 // app/build.gradle.kts
-dependencies { implementation("dev.redfox:obsidian:1.0.0") }
+dependencies { implementation("dev.redfox:obsidian:2.0.0") }
 ```
 
 Gradle swaps the dependency for the local source, so changes to Obsidian show up in the app on the next build.
@@ -74,7 +74,8 @@ Material 3 theme is installed too, so stock dialogs, menus and text fields blend
 ./gradlew build
 ```
 
-The build compiles the library, runs its tests and Android lint. CI runs the same on every push and pull request.
+The build compiles the library, runs its tests and Android lint, and checks the public API against
+`obsidian/api/obsidian.api`. CI runs the same on every push and pull request.
 
 ## Contributing
 
@@ -82,7 +83,10 @@ Issues and pull requests are welcome. Before you open a PR:
 
 - Follow the rules in [docs/GUIDE.md](docs/GUIDE.md): tokens only, springs for anything interactive, glows only on primary elements.
 - Add a new component to `ObsidianShowcase` so it can be checked by eye.
-- Run `./gradlew build`.
+- Run `./gradlew build`. If you changed the public API on purpose, record it with
+  `./gradlew :obsidian:apiDump` and commit `obsidian/api/obsidian.api`; the build fails on any
+  API change that isn't recorded there.
+- Note the change in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

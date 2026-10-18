@@ -70,7 +70,7 @@ import dev.redfox.obsidian.theme.ScreenGutter
  * [onAccentChange] lets the swatch row switch the host's accent; omit it for a read-only row.
  */
 @Composable
-fun ObsidianShowcase(
+public fun ObsidianShowcase(
     modifier: Modifier = Modifier,
     onAccentChange: ((ObsidianAccent) -> Unit)? = null,
 ) {
@@ -162,7 +162,7 @@ private fun TypeSection() {
     val c = ObsidianTheme.colors
     val t = ObsidianTheme.typography
     val styles: List<Pair<String, TextStyle>> = listOf(
-        "timeLarge" to t.timeLarge, "screenTitle" to t.screenTitle, "title" to t.title,
+        "numericLarge" to t.numericLarge, "screenTitle" to t.screenTitle, "title" to t.title,
         "bodyLarge" to t.bodyLarge, "body" to t.body, "label" to t.label,
         "button" to t.button, "SECTION LABEL" to t.sectionLabel, "CAPTION" to t.caption,
     )
@@ -173,7 +173,7 @@ private fun TypeSection() {
             Text(name, style = style, color = c.textPrimary, modifier = Modifier.padding(top = 8.dp))
         }
         Row(Modifier.padding(top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            RollingText("%02d:%02d".format(counter / 60 % 24, counter % 60), style = t.timeLarge, color = c.textPrimary)
+            RollingText("%02d:%02d".format(counter / 60 % 24, counter % 60), style = t.numericLarge, color = c.textPrimary)
             Box(Modifier.weight(1f))
             PillButton("Roll", onClick = { counter += 13 })
         }

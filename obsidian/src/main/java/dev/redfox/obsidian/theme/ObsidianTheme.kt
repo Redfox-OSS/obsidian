@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
@@ -17,7 +18,7 @@ import androidx.compose.ui.unit.dp
  * (dialogs, dropdown menus, text fields, bottom sheets) blend in.
  */
 @Composable
-fun ObsidianTheme(
+public fun ObsidianTheme(
     colors: ObsidianColors = obsidianColors(),
     typography: ObsidianTypography = ObsidianTypography.Default,
     content: @Composable () -> Unit,
@@ -67,7 +68,7 @@ fun ObsidianTheme(
 
 /** Convenience overload: pick an accent + neutral ramp (both have presets on their companions). */
 @Composable
-fun ObsidianTheme(
+public fun ObsidianTheme(
     accent: ObsidianAccent,
     neutrals: ObsidianNeutrals = ObsidianNeutrals.Dark,
     typography: ObsidianTypography = ObsidianTypography.Default,
@@ -77,39 +78,39 @@ fun ObsidianTheme(
     ObsidianTheme(colors = colors, typography = typography, content = content)
 }
 
-object ObsidianTheme {
-    val colors: ObsidianColors
+public object ObsidianTheme {
+    public val colors: ObsidianColors
         @Composable @ReadOnlyComposable get() = LocalObsidianColors.current
 
-    val typography: ObsidianTypography
+    public val typography: ObsidianTypography
         @Composable @ReadOnlyComposable get() = LocalObsidianTypography.current
 }
 
 /** Squircle radii. */
-object ObShapes {
-    val Card = RoundedCornerShape(16.dp)
-    val CardLarge = RoundedCornerShape(24.dp)
-    val Tile = RoundedCornerShape(16.dp)
-    val Small = RoundedCornerShape(12.dp)
-    val Fab = RoundedCornerShape(18.dp)
-    val Checkbox = RoundedCornerShape(8.dp)
-    val Pill = CircleShape
+public object ObShapes {
+    public val Card: RoundedCornerShape = RoundedCornerShape(16.dp)
+    public val CardLarge: RoundedCornerShape = RoundedCornerShape(24.dp)
+    public val Tile: RoundedCornerShape = RoundedCornerShape(16.dp)
+    public val Small: RoundedCornerShape = RoundedCornerShape(12.dp)
+    public val Fab: RoundedCornerShape = RoundedCornerShape(18.dp)
+    public val Checkbox: RoundedCornerShape = RoundedCornerShape(8.dp)
+    public val Pill: RoundedCornerShape = CircleShape
 }
 
 /** Spacing scale. Every page uses [Gutter] as its horizontal edge padding. */
-object ObSpacing {
-    val XXS = 4.dp
-    val XS = 6.dp
-    val S = 8.dp
-    val M = 12.dp
-    val L = 16.dp
-    val Gutter = 20.dp
-    val XL = 24.dp
-    val XXL = 32.dp
+public object ObSpacing {
+    public val XXS: Dp = 4.dp
+    public val XS: Dp = 6.dp
+    public val S: Dp = 8.dp
+    public val M: Dp = 12.dp
+    public val L: Dp = 16.dp
+    public val Gutter: Dp = 20.dp
+    public val XL: Dp = 24.dp
+    public val XXL: Dp = 32.dp
 }
 
 /** Screen horizontal gutter used by every page. */
-val ScreenGutter = ObSpacing.Gutter
+public val ScreenGutter: Dp = ObSpacing.Gutter
 
 private val ObsidianMaterialShapes = Shapes(
     extraSmall = RoundedCornerShape(8.dp),

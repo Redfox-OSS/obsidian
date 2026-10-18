@@ -30,18 +30,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import dev.redfox.obsidian.theme.ObsidianTheme
 import dev.redfox.obsidian.effects.ambientFloat
 import dev.redfox.obsidian.effects.breathingGlow
 import dev.redfox.obsidian.effects.pressable
 import dev.redfox.obsidian.motion.revealOnEnter
 import dev.redfox.obsidian.theme.ObShapes
+import dev.redfox.obsidian.theme.ObsidianTheme
 
 /**
  * Base card. [onClick]/[onLongClick] make it tactile via [pressable].
  */
 @Composable
-fun ObCard(
+public fun ObCard(
     modifier: Modifier = Modifier,
     shape: Shape = ObShapes.Card,
     color: Color = ObsidianTheme.colors.card,
@@ -67,7 +67,7 @@ fun ObCard(
 
 /** Rounded icon container (settings rows, group icons, form rows). */
 @Composable
-fun IconTile(
+public fun IconTile(
     @DrawableRes icon: Int,
     modifier: Modifier = Modifier,
     size: Dp = 40.dp,
@@ -86,7 +86,7 @@ fun IconTile(
 
 /** Uppercase eyebrow label above a section ("APPEARANCE", "REPEAT"). */
 @Composable
-fun SectionLabel(
+public fun SectionLabel(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = ObsidianTheme.colors.textSecondary.copy(alpha = 0.8f),
@@ -103,7 +103,7 @@ fun SectionLabel(
 }
 
 @Composable
-fun ObDivider(modifier: Modifier = Modifier) {
+public fun ObDivider(modifier: Modifier = Modifier) {
     Box(modifier.fillMaxWidth().height(1.dp).background(ObsidianTheme.colors.divider))
 }
 
@@ -111,7 +111,7 @@ fun ObDivider(modifier: Modifier = Modifier) {
  * Standard row used in form and settings cards: icon tile, title/subtitle, trailing slot.
  */
 @Composable
-fun ObListRow(
+public fun ObListRow(
     title: String,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int? = null,
@@ -162,7 +162,7 @@ fun ObListRow(
 
 /** Empty list placeholder in the design language. */
 @Composable
-fun EmptyState(
+public fun EmptyState(
     @DrawableRes icon: Int,
     title: String,
     subtitle: String,

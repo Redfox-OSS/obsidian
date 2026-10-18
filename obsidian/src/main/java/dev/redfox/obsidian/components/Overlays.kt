@@ -16,13 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import dev.redfox.obsidian.theme.ObsidianTheme
 import dev.redfox.obsidian.motion.popIn
 import dev.redfox.obsidian.theme.ObShapes
+import dev.redfox.obsidian.theme.ObsidianTheme
 
 /** Dropdown menu styled as a floating squircle card. */
 @Composable
-fun ObDropdownMenu(
+public fun ObDropdownMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
@@ -43,7 +43,7 @@ fun ObDropdownMenu(
 }
 
 @Composable
-fun ObMenuItem(
+public fun ObMenuItem(
     text: String,
     onClick: () -> Unit,
     selected: Boolean = false,
@@ -63,7 +63,7 @@ fun ObMenuItem(
 
 /** Confirmation dialog on the card surface. */
 @Composable
-fun ObAlertDialog(
+public fun ObAlertDialog(
     title: String,
     text: String,
     confirmLabel: String,

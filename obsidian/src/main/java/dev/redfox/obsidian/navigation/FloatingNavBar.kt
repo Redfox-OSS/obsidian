@@ -33,8 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -50,10 +50,10 @@ import dev.redfox.obsidian.effects.glow
 import dev.redfox.obsidian.effects.pressable
 import dev.redfox.obsidian.theme.ObsidianTheme
 import dev.redfox.obsidian.theme.ScreenGutter
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 private val NavBarHeight = 64.dp
 private val NavBarBottomGap = 12.dp
@@ -68,19 +68,19 @@ private val HaloSideInset = 2.dp
  * last item can scroll clear of the [FloatingNavBar].
  */
 @Composable
-fun floatingNavClearance(): Dp =
+public fun floatingNavClearance(): Dp =
     NavBarHeight + NavBarBottomGap + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
 /** A tab of the [FloatingNavBar]. [motion] is the little animation its icon plays when selected. */
 @Immutable
-data class FloatingNavItem(
+public data class FloatingNavItem(
     @param:DrawableRes val icon: Int,
     val label: String,
     val motion: NavIconMotion = NavIconMotion.Pop,
 )
 
 /** Icon animations for [FloatingNavItem]. Every one starts with the shared dip-and-pop beat. */
-enum class NavIconMotion {
+public enum class NavIconMotion {
     /** Just the shared dip-and-pop. */
     Pop,
     /** A decaying side-to-side shake (a ringing bell / alarm clock). */
@@ -104,7 +104,7 @@ enum class NavIconMotion {
  * Pass `selectedIndex = -1` when no tab is selected (the halo hides).
  */
 @Composable
-fun FloatingNavBar(
+public fun FloatingNavBar(
     items: List<FloatingNavItem>,
     selectedIndex: Int,
     onSelect: (Int) -> Unit,

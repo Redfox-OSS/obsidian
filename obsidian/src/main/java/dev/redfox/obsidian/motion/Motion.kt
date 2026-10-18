@@ -2,11 +2,16 @@ package dev.redfox.obsidian.motion
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -19,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -28,39 +34,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.AlignmentLine
+import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 import kotlin.math.max
 import kotlin.math.min
-import androidx.compose.animation.core.VisibilityThreshold
-import androidx.compose.ui.layout.FirstBaseline
-import androidx.compose.ui.layout.LastBaseline
-import androidx.compose.ui.layout.AlignmentLine
+import kotlinx.coroutines.delay
 
 /**
  * Motion vocabulary for the whole app. Everything interactive uses physics (springs) so it can be
  * interrupted mid-flight; only choreographed entrances use time-based easing.
  */
-object ObMotion {
+public object ObMotion {
     /** Playful overshoot: nav indicator, pops, check marks. */
-    fun <T> bouncy() = spring<T>(dampingRatio = 0.55f, stiffness = 380f)
+    public fun <T> bouncy(): SpringSpec<T> = spring<T>(dampingRatio = 0.55f, stiffness = 380f)
     /** Quick and settled: toggles, pills, colour changes. */
-    fun <T> snappy() = spring<T>(dampingRatio = 0.82f, stiffness = 700f)
+    public fun <T> snappy(): SpringSpec<T> = spring<T>(dampingRatio = 0.82f, stiffness = 700f)
     /** Soft, no overshoot: entrances and layout. */
-    fun <T> gentle() = spring<T>(dampingRatio = 0.9f, stiffness = 240f)
+    public fun <T> gentle(): SpringSpec<T> = spring<T>(dampingRatio = 0.9f, stiffness = 240f)
 
     /** Material "emphasized decelerate" — fast start, long soft landing. */
-    val EaseOutEmphasized = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
+    public val EaseOutEmphasized: Easing = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
 
     /** Delay between consecutive items of a staggered entrance. */
-    const val StaggerMillis = 38L
+    public const val StaggerMillis: Long = 38L
     /** Items past this index enter together with it, so long lists don't trickle in. */
-    const val MaxStaggerIndex = 9
+    public const val MaxStaggerIndex: Int = 9
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -71,7 +76,7 @@ object ObMotion {
  * Remembers when a screen first appeared. Items only play their entrance while the screen is
  * fresh — scrolling a lazy list later must not replay it for recycled items.
  */
-class RevealGate internal constructor(private val startNanos: Long) {
+public class RevealGate internal constructor(private val startNanos: Long) {
     internal fun isFresh(): Boolean = System.nanoTime() - startNanos < WindowNanos
 
     private companion object {
@@ -79,14 +84,14 @@ class RevealGate internal constructor(private val startNanos: Long) {
     }
 }
 
-val LocalRevealGate = staticCompositionLocalOf<RevealGate?> { null }
+public val LocalRevealGate: ProvidableCompositionLocal<RevealGate?> = staticCompositionLocalOf<RevealGate?> { null }
 
 /**
  * Scope for a destination: its [revealOnEnter] items play once when it is shown. With
  * [enabled] false (e.g. returning to a screen via back) everything appears in place.
  */
 @Composable
-fun RevealScope(enabled: Boolean = true, content: @Composable () -> Unit) {
+public fun RevealScope(enabled: Boolean = true, content: @Composable () -> Unit) {
     val gate = remember { RevealGate(if (enabled) System.nanoTime() else Long.MIN_VALUE / 2) }
     CompositionLocalProvider(LocalRevealGate provides gate, content = content)
 }
@@ -96,7 +101,7 @@ fun RevealScope(enabled: Boolean = true, content: @Composable () -> Unit) {
  * steps after the screen appears. Cheap — it only touches the draw layer.
  */
 @Composable
-fun Modifier.revealOnEnter(index: Int = 0, offsetY: Dp = 22.dp): Modifier {
+public fun Modifier.revealOnEnter(index: Int = 0, offsetY: Dp = 22.dp): Modifier {
     val gate = LocalRevealGate.current
     val animate = remember { gate?.isFresh() ?: true }
     val progress = remember { Animatable(if (animate) 0f else 1f) }
@@ -121,7 +126,7 @@ fun Modifier.revealOnEnter(index: Int = 0, offsetY: Dp = 22.dp): Modifier {
 
 /** One-shot springy scale-in for dialogs and sheets. */
 @Composable
-fun Modifier.popIn(from: Float = 0.88f): Modifier {
+public fun Modifier.popIn(from: Float = 0.88f): Modifier {
     val progress = remember { Animatable(0f) }
     LaunchedEffect(Unit) { progress.animateTo(1f, spring(dampingRatio = 0.62f, stiffness = 420f)) }
     return graphicsLayer {
@@ -140,7 +145,7 @@ fun Modifier.popIn(from: Float = 0.88f): Modifier {
  * so the stagger costs a single animation. Replays only when the screen is first shown.
  */
 @Composable
-fun RevealColumn(
+public fun RevealColumn(
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
@@ -198,7 +203,7 @@ fun RevealColumn(
  * that change at most a few times a second.
  */
 @Composable
-fun RollingText(
+public fun RollingText(
     text: String,
     style: TextStyle,
     color: Color,
@@ -267,7 +272,7 @@ private fun rollTransform(up: Boolean): ContentTransform {
  * slightly and settles with a bounce. Pair with a colour change for chips and pills.
  */
 @Composable
-fun Modifier.popOnSelect(selected: Boolean, amount: Float = 0.08f): Modifier {
+public fun Modifier.popOnSelect(selected: Boolean, amount: Float = 0.08f): Modifier {
     val scale = remember { Animatable(1f) }
     val initial = remember { booleanArrayOf(true) }
     LaunchedEffect(selected) {
@@ -291,7 +296,7 @@ fun Modifier.popOnSelect(selected: Boolean, amount: Float = 0.08f): Modifier {
  * while the content pops in, so siblings glide aside instead of jumping.
  */
 @Composable
-fun HorizontalReveal(visible: Boolean, content: @Composable () -> Unit) {
+public fun HorizontalReveal(visible: Boolean, content: @Composable () -> Unit) {
     androidx.compose.animation.AnimatedVisibility(
         visible = visible,
         enter = androidx.compose.animation.expandHorizontally(
@@ -307,15 +312,15 @@ fun HorizontalReveal(visible: Boolean, content: @Composable () -> Unit) {
 }
 
 /** Expand/collapse for disclosure sections: springy height, content fades in slightly late. */
-val ExpandEnter = androidx.compose.animation.expandVertically(
+public val ExpandEnter: EnterTransition = androidx.compose.animation.expandVertically(
     spring(dampingRatio = 0.85f, stiffness = 380f, visibilityThreshold = androidx.compose.ui.unit.IntSize.VisibilityThreshold)
 ) + fadeIn(tween(220, delayMillis = 60))
-val CollapseExit = androidx.compose.animation.shrinkVertically(
+public val CollapseExit: ExitTransition = androidx.compose.animation.shrinkVertically(
     spring(dampingRatio = 1f, stiffness = 500f, visibilityThreshold = androidx.compose.ui.unit.IntSize.VisibilityThreshold)
 ) + fadeOut(tween(120))
 
 /** Header action sets swapping (normal <-> selection mode): a quick scale-and-fade exchange. */
-val HeaderActionsSwap: ContentTransform
+public val HeaderActionsSwap: ContentTransform
     get() = ContentTransform(
         targetContentEnter = fadeIn(tween(200, delayMillis = 60)) +
             androidx.compose.animation.scaleIn(ObMotion.bouncy(), initialScale = 0.7f),
@@ -324,5 +329,5 @@ val HeaderActionsSwap: ContentTransform
     )
 
 /** Whole-text replacement that rolls up (e.g. the next-alarm time changing). */
-val RollSwap: ContentTransform
+public val RollSwap: ContentTransform
     get() = rollTransform(up = true)

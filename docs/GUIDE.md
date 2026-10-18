@@ -102,11 +102,11 @@ Swap the face with `obsidianTypography(fontFamily = MyFont)` → pass to `Obsidi
 
 | Style | Weight | Size / line | Tracking | Use |
 |---|---|---|---|---|
-| `timeLarge` | Light | 44 / 48 | −0.05em | hero numeric readout |
-| `timeTile` | Light | 44 / 44 | −0.025em | picker tiles |
-| `timeMedium` | Light | 26 / 32 | −0.025em | nested readouts |
-| `timeSmall` | SemiBold | 20 / 28 | −0.025em | compact rows |
-| `meridiem` | Medium | 14 / 18 | +0.02em | AM/PM, units |
+| `numericLarge` | Light | 44 / 48 | −0.05em | hero number: a time, a result, a total |
+| `numericTile` | Light | 44 / 44 | −0.025em | picker tiles, keypad keys |
+| `numericMedium` | Light | 26 / 32 | −0.025em | nested numbers |
+| `numericSmall` | SemiBold | 20 / 28 | −0.025em | numbers in compact rows |
+| `unit` | Medium | 14 / 18 | +0.02em | AM/PM, %, units beside a number |
 | `screenTitle` | SemiBold | 20 / 26 | −0.5sp | large page header |
 | `title` | SemiBold | 20 / 26 | — | card titles, dialog titles |
 | `headerTitle` | SemiBold | 16 / 24 | −0.4sp | detail header |

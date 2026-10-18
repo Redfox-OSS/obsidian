@@ -2,22 +2,18 @@ package dev.redfox.obsidian.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.unit.IntOffset
-import kotlin.math.abs
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
@@ -30,7 +26,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -41,23 +36,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import dev.redfox.obsidian.R
-import dev.redfox.obsidian.theme.ObsidianTheme
 import dev.redfox.obsidian.effects.ObGlows
 import dev.redfox.obsidian.effects.glow
 import dev.redfox.obsidian.effects.pressable
 import dev.redfox.obsidian.motion.ObMotion
 import dev.redfox.obsidian.motion.popOnSelect
 import dev.redfox.obsidian.theme.ObShapes
+import dev.redfox.obsidian.theme.ObsidianTheme
+import kotlin.math.abs
 
 /** Rounded choice pill (repeat frequency, snooze duration…). */
 @Composable
-fun ChoicePill(
+public fun ChoicePill(
     text: String,
     selected: Boolean,
     onClick: () -> Unit,
@@ -89,7 +89,7 @@ fun ChoicePill(
 
 /** Circular single-letter weekday toggle for custom repeat. */
 @Composable
-fun DayChip(
+public fun DayChip(
     letter: String,
     selected: Boolean,
     onClick: () -> Unit,
@@ -115,14 +115,14 @@ fun DayChip(
     }
 }
 
-data class SegmentOption(val label: String, val trailingIcon: ImageVector? = null)
+public data class SegmentOption(val label: String, val trailingIcon: ImageVector? = null)
 
 /**
  * Two-or-more option segmented pill (Single / Series). The selected segment slides
  * between positions and shows a check mark, as in the design.
  */
 @Composable
-fun SegmentedPill(
+public fun SegmentedPill(
     options: List<SegmentOption>,
     selectedIndex: Int,
     onSelect: (Int) -> Unit,
@@ -219,7 +219,7 @@ fun SegmentedPill(
 
 /** Squircle checkbox from the group editor. */
 @Composable
-fun ObCheckbox(
+public fun ObCheckbox(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,

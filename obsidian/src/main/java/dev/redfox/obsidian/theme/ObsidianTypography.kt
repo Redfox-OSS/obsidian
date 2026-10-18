@@ -2,6 +2,7 @@ package dev.redfox.obsidian.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
@@ -21,7 +22,7 @@ private fun inter(weight: FontWeight) = Font(
     variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight))
 )
 
-val InterFontFamily = FontFamily(
+public val InterFontFamily: FontFamily = FontFamily(
     inter(FontWeight.Light),
     inter(FontWeight.Normal),
     inter(FontWeight.Medium),
@@ -31,19 +32,19 @@ val InterFontFamily = FontFamily(
 
 /** Type scale of the Obsidian design system. */
 @Immutable
-data class ObsidianTypography(
-    /** Large-page header title ("Alarms", "Settings"). */
+public data class ObsidianTypography(
+    /** Large-page header title ("Messages", "Settings"). */
     val screenTitle: TextStyle,
-    /** Hero numeric readout (big time on a card). Light weight, tight tracking. */
-    val timeLarge: TextStyle,
-    /** Digits inside picker tiles. */
-    val timeTile: TextStyle,
-    /** Secondary numeric readout (nested rows). */
-    val timeMedium: TextStyle,
-    /** Numeric readout in compact rows. */
-    val timeSmall: TextStyle,
-    /** Unit / AM-PM suffix next to a numeric readout. */
-    val meridiem: TextStyle,
+    /** Hero number: a time, a result, a total. Light weight, tight tracking. */
+    val numericLarge: TextStyle,
+    /** Digits inside picker tiles and keypad keys. */
+    val numericTile: TextStyle,
+    /** Secondary number (nested rows). */
+    val numericMedium: TextStyle,
+    /** Number in compact rows. */
+    val numericSmall: TextStyle,
+    /** Unit or suffix beside a number: AM/PM, %, kg. */
+    val unit: TextStyle,
     /** Card titles. */
     val title: TextStyle,
     /** Detail-screen header title. */
@@ -54,26 +55,41 @@ data class ObsidianTypography(
     /** Settings row title, chips, small buttons. */
     val label: TextStyle,
     val labelStrong: TextStyle,
-    /** Tiny uppercase eyebrow text ("NEXT ALARM"). */
+    /** Tiny uppercase eyebrow text ("NEXT ALARM", "PINNED"). */
     val caption: TextStyle,
-    /** Uppercase section label above a form section ("REPEAT"). */
+    /** Uppercase section label above a form section ("REPEAT", "NOTIFICATIONS"). */
     val sectionLabel: TextStyle,
     /** Full-width CTA label. */
     val button: TextStyle,
 ) {
-    companion object {
-        val Default = obsidianTypography()
+    @Deprecated("Renamed to numericLarge.", ReplaceWith("numericLarge"))
+    public val timeLarge: TextStyle get() = numericLarge
+
+    @Deprecated("Renamed to numericTile.", ReplaceWith("numericTile"))
+    public val timeTile: TextStyle get() = numericTile
+
+    @Deprecated("Renamed to numericMedium.", ReplaceWith("numericMedium"))
+    public val timeMedium: TextStyle get() = numericMedium
+
+    @Deprecated("Renamed to numericSmall.", ReplaceWith("numericSmall"))
+    public val timeSmall: TextStyle get() = numericSmall
+
+    @Deprecated("Renamed to unit.", ReplaceWith("unit"))
+    public val meridiem: TextStyle get() = unit
+
+    public companion object {
+        public val Default: ObsidianTypography = obsidianTypography()
     }
 }
 
 /** Builds the type scale on [fontFamily] (Inter by default) — swap the face, keep the rhythm. */
-fun obsidianTypography(fontFamily: FontFamily = InterFontFamily) = ObsidianTypography(
+public fun obsidianTypography(fontFamily: FontFamily = InterFontFamily): ObsidianTypography = ObsidianTypography(
     screenTitle = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 26.sp, letterSpacing = (-0.5).sp),
-    timeLarge = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light, fontSize = 44.sp, lineHeight = 48.sp, letterSpacing = (-0.05).em),
-    timeTile = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light, fontSize = 44.sp, lineHeight = 44.sp, letterSpacing = (-0.025).em),
-    timeMedium = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light, fontSize = 26.sp, lineHeight = 32.sp, letterSpacing = (-0.025).em),
-    timeSmall = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 28.sp, letterSpacing = (-0.025).em),
-    meridiem = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Medium, fontSize = 14.sp, lineHeight = 18.sp, letterSpacing = 0.02.em),
+    numericLarge = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light, fontSize = 44.sp, lineHeight = 48.sp, letterSpacing = (-0.05).em),
+    numericTile = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light, fontSize = 44.sp, lineHeight = 44.sp, letterSpacing = (-0.025).em),
+    numericMedium = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light, fontSize = 26.sp, lineHeight = 32.sp, letterSpacing = (-0.025).em),
+    numericSmall = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 28.sp, letterSpacing = (-0.025).em),
+    unit = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Medium, fontSize = 14.sp, lineHeight = 18.sp, letterSpacing = 0.02.em),
     title = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 26.sp),
     headerTitle = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, lineHeight = 24.sp, letterSpacing = (-0.4).sp),
     bodyLarge = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Medium, fontSize = 16.sp, lineHeight = 24.sp),
@@ -85,7 +101,7 @@ fun obsidianTypography(fontFamily: FontFamily = InterFontFamily) = ObsidianTypog
     button = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Bold, fontSize = 16.sp, lineHeight = 24.sp),
 )
 
-val LocalObsidianTypography = staticCompositionLocalOf { ObsidianTypography.Default }
+public val LocalObsidianTypography: ProvidableCompositionLocal<ObsidianTypography> = staticCompositionLocalOf { ObsidianTypography.Default }
 
 /** Material 3 type scale on [fontFamily], for the few stock M3 components (dialogs, menus, text fields). */
 internal fun materialTypography(fontFamily: FontFamily): Typography {

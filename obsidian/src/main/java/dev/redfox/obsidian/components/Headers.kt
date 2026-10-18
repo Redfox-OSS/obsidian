@@ -10,7 +10,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -21,29 +21,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import dev.redfox.obsidian.R
-import dev.redfox.obsidian.theme.ObsidianTheme
 import dev.redfox.obsidian.effects.glassEffect
 import dev.redfox.obsidian.motion.revealOnEnter
+import dev.redfox.obsidian.theme.ObsidianTheme
 import dev.redfox.obsidian.theme.ScreenGutter
 
 /** Height of the header bar below the status bar, for content top padding. */
-val LargeHeaderHeight = 64.dp
-val DetailHeaderHeight = 60.dp
+public val LargeHeaderHeight: Dp = 64.dp
+public val DetailHeaderHeight: Dp = 60.dp
 
 /**
  * Frosted top header for the tab pages ("Alarms", "Alarm Groups", "Settings").
  * Place it over a [glassSource] list and pad the list by status bar + [LargeHeaderHeight].
  */
 @Composable
-fun LargeHeader(
+public fun LargeHeader(
     title: String,
     modifier: Modifier = Modifier,
     actions: @Composable RowScope.() -> Unit = {},
@@ -70,7 +71,7 @@ fun LargeHeader(
 
 /** Frosted header for pushed screens: back arrow, title, optional actions. */
 @Composable
-fun DetailHeader(
+public fun DetailHeader(
     title: String,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,

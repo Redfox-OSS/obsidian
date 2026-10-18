@@ -3,18 +3,15 @@ package dev.redfox.obsidian.components
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,15 +20,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import dev.redfox.obsidian.theme.ObsidianTheme
 import dev.redfox.obsidian.effects.ObGlows
 import dev.redfox.obsidian.effects.glow
 import dev.redfox.obsidian.motion.ObMotion
+import dev.redfox.obsidian.theme.ObsidianTheme
 
-enum class SwitchSize(val width: Dp, val height: Dp, val thumb: Dp, val padding: Dp) {
+public enum class SwitchSize(public val width: Dp, public val height: Dp, public val thumb: Dp, public val padding: Dp) {
     /** Alarm cards and group headers (52×30). */
     Large(52.dp, 30.dp, 24.dp, 3.dp),
     /** Settings rows (48×28). */
@@ -45,7 +45,7 @@ enum class SwitchSize(val width: Dp, val height: Dp, val thumb: Dp, val padding:
  * when off. [showDot] adds the small accent dot in the thumb used on the alarm list cards.
  */
 @Composable
-fun ObSwitch(
+public fun ObSwitch(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
