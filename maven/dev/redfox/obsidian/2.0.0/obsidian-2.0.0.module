@@ -1,0 +1,158 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "dev.redfox",
+    "module": "obsidian",
+    "version": "2.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.4.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.compose",
+          "module": "compose-bom",
+          "version": {
+            "requires": "2026.02.01"
+          },
+          "attributes": {
+            "org.gradle.category": "platform"
+          }
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui"
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-graphics"
+        },
+        {
+          "group": "androidx.compose.material3",
+          "module": "material3"
+        },
+        {
+          "group": "dev.chrisbanes.haze",
+          "module": "haze",
+          "version": {
+            "requires": "1.7.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "obsidian-2.0.0.aar",
+          "url": "obsidian-2.0.0.aar",
+          "size": 937818,
+          "sha512": "6161a7b4431af52296f0286a5cad641e568633c5ddfaa5f55e3e8b53a7668f22110a28a983e6c1cd2be77dccd196fd371dc65008ae367c91830e5594d4618816",
+          "sha256": "65d5fdf819a2f4bcf22e7a2c9acbc752a57f31949b5940f07c05f2ea299be817",
+          "sha1": "1144d5e9e99d8635e5e2d2e1202c1ee95c9286d7",
+          "md5": "6dc1183a00100107854f4ea61139284b"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.compose",
+          "module": "compose-bom",
+          "version": {
+            "requires": "2026.02.01"
+          },
+          "attributes": {
+            "org.gradle.category": "platform"
+          }
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-tooling-preview"
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui"
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-graphics"
+        },
+        {
+          "group": "androidx.compose.material3",
+          "module": "material3"
+        },
+        {
+          "group": "dev.chrisbanes.haze",
+          "module": "haze",
+          "version": {
+            "requires": "1.7.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "obsidian-2.0.0.aar",
+          "url": "obsidian-2.0.0.aar",
+          "size": 937818,
+          "sha512": "6161a7b4431af52296f0286a5cad641e568633c5ddfaa5f55e3e8b53a7668f22110a28a983e6c1cd2be77dccd196fd371dc65008ae367c91830e5594d4618816",
+          "sha256": "65d5fdf819a2f4bcf22e7a2c9acbc752a57f31949b5940f07c05f2ea299be817",
+          "sha1": "1144d5e9e99d8635e5e2d2e1202c1ee95c9286d7",
+          "md5": "6dc1183a00100107854f4ea61139284b"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "obsidian-2.0.0-sources.jar",
+          "url": "obsidian-2.0.0-sources.jar",
+          "size": 64687,
+          "sha512": "6d1a3649b285e72f47d8a7540bcf897f69237b67f21dae669edb4ca74bf24c9f0ae70d5d14c9f9997c02c80f34c4ca683507ff7af46ce73cca78d32c71317b0c",
+          "sha256": "4895d3dfa39b004d1e663f03f8d7f409a29f8da50c1d5bbf0a71f9e0a030f9e8",
+          "sha1": "d9600298c5c1d1661fd1bf721a51a2b65ff5c85d",
+          "md5": "0fdda03818fbd9dd69ab35fe71e5d388"
+        }
+      ]
+    }
+  ]
+}
