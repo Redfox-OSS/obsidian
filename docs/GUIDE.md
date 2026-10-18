@@ -15,8 +15,10 @@ obsidian/src/main/java/dev/redfox/obsidian/
 ├── theme/        ObsidianTheme, ObsidianColors (+ Accent/Neutrals presets), ObsidianTypography, ObShapes, ObSpacing
 ├── effects/      glow + ObGlows presets, breathingGlow, ambientFloat, glassSource/glassEffect, pressable
 ├── motion/       ObMotion springs, RevealScope/revealOnEnter/RevealColumn, popIn, popOnSelect, RollingText, transitions
-├── components/   buttons, switch, checkbox, pills, segmented control, cards, rows, headers, menus, dialogs, empty state
-├── navigation/   FloatingNavBar (liquid indicator + per-icon motion), floatingNavClearance()
+├── components/   buttons, switch, checkbox, pills, segmented control, cards, rows, headers, pages, menus, dialogs,
+│                 sheets, swipe rows, avatars, badges, progress, copy pill, search field, accent picker, empty state
+├── navigation/   FloatingNavBar (liquid indicator, per-icon motion, compact mode), rememberCompactNavState, floatingNavClearance()
+├── platform/     copyToClipboard
 └── showcase/     ObsidianShowcase
 ```
 
@@ -243,7 +245,17 @@ Keep per-frame work in `graphicsLayer {}` / `placeWithLayer {}` lambdas (draw ph
 | `ObDropdownMenu` / `ObMenuItem` | squircle floating menu |
 | `ObAlertDialog(title, text, confirmLabel, …, destructive)` | card dialog with pill buttons, pops in |
 | `EmptyState(icon, title, subtitle)` | floating, breathing badge with staggered text |
-| `FloatingNavBar(items, selectedIndex, onSelect)` | frosted pill nav with a pill selection halo; pad content by `floatingNavClearance()` |
+| `TabPage(title, actions) { padding -> }` / `DetailPage(title, onBack, actions) { padding -> }` | screen layouts: frosted header over the content, with padding that clears the header (and the nav bar on tab pages) |
+| `ObSheet(onDismiss, title) { }` / `SheetAction(label, icon, onClick, destructive)` | bottom sheet on `card`, 28dp top corners, grab handle; tappable action rows |
+| `SwipeActionRow(left, right, onSwipeLeft, onSwipeRight) { }` | swipe a row past the threshold to act (archive, delete); `SwipeVisual(label, icon, color)` per side, `null` disables a side; Confirm haptic, springs back |
+| `ObAvatar(name, size, fallbackIcon, image)` / `ObAvatarPair(front, back, size)` | photo (any image loader, via the `image` slot), else initials on `tile`, else a glyph; two overlapping avatars for groups |
+| `CountBadge(count, max = 99)` | accent pill with odometer digits; no glow |
+| `ObProgressBar(visible, progress, label)` | hairline progress with an easing fill, a travelling shine, label and percentage; folds away when done |
+| `CopyPill(value, onCopy, label, copiedLabel)` | "Copy 482913", then "Copied" for 1.8s; pair with `copyToClipboard(…, sensitive = true)` for codes |
+| `ObSearchField(query, onQueryChange, placeholder, onSearch)` | floating search pill with clear button and a keyboard search key |
+| `AccentSwatchRow(selected, onSelect, accents)` | accent picker; selected swatch glows, rings and pops |
+| `DateDivider(label)` | centred uppercase day separator |
+| `FloatingNavBar(items, selectedIndex, onSelect, compact, action, pill)` | frosted pill nav with a pill selection halo; optional compact mode (`rememberCompactNavState`), end action and side accent button; pad content by `floatingNavClearance()` |
 | `ObsidianShowcase(onAccentChange?)` | style guide screen |
 
 ## 9. Haptics

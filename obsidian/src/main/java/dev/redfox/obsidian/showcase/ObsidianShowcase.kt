@@ -28,34 +28,44 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.redfox.obsidian.R
+import dev.redfox.obsidian.components.AccentSwatchRow
 import dev.redfox.obsidian.components.ActionPillButton
 import dev.redfox.obsidian.components.ChoicePill
+import dev.redfox.obsidian.components.CopyPill
+import dev.redfox.obsidian.components.CountBadge
+import dev.redfox.obsidian.components.DateDivider
 import dev.redfox.obsidian.components.DayChip
 import dev.redfox.obsidian.components.LargeHeader
 import dev.redfox.obsidian.components.LargeHeaderHeight
+import dev.redfox.obsidian.components.ObAvatar
+import dev.redfox.obsidian.components.ObAvatarPair
 import dev.redfox.obsidian.components.ObCard
 import dev.redfox.obsidian.components.ObCheckbox
 import dev.redfox.obsidian.components.ObDivider
 import dev.redfox.obsidian.components.ObFab
 import dev.redfox.obsidian.components.ObListRow
+import dev.redfox.obsidian.components.ObProgressBar
+import dev.redfox.obsidian.components.ObSearchField
+import dev.redfox.obsidian.components.ObSheet
 import dev.redfox.obsidian.components.ObSwitch
 import dev.redfox.obsidian.components.PillButton
 import dev.redfox.obsidian.components.PrimaryButton
 import dev.redfox.obsidian.components.SectionLabel
 import dev.redfox.obsidian.components.SegmentOption
 import dev.redfox.obsidian.components.SegmentedPill
+import dev.redfox.obsidian.components.SheetAction
+import dev.redfox.obsidian.components.SwipeActionRow
+import dev.redfox.obsidian.components.SwipeVisual
 import dev.redfox.obsidian.effects.GlowSpec
 import dev.redfox.obsidian.effects.ObGlows
 import dev.redfox.obsidian.effects.breathingGlow
 import dev.redfox.obsidian.effects.glassSource
 import dev.redfox.obsidian.effects.glow
-import dev.redfox.obsidian.effects.pressable
 import dev.redfox.obsidian.motion.RevealColumn
 import dev.redfox.obsidian.motion.RevealScope
 import dev.redfox.obsidian.motion.RollingText
@@ -94,6 +104,8 @@ public fun ObsidianShowcase(
                 GlowSection()
                 ControlsSection()
                 ButtonsSection()
+                FeedbackSection()
+                ListSection()
             }
             LargeHeader(title = "Obsidian")
         }
@@ -103,25 +115,10 @@ public fun ObsidianShowcase(
 @Composable
 private fun AccentSection(onAccentChange: ((ObsidianAccent) -> Unit)?) {
     val colors = ObsidianTheme.colors
+    val current = ObsidianAccent.Presets.firstOrNull { it.main == colors.accent } ?: ObsidianAccent.Presets.first()
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         SectionLabel("Accent")
-        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            ObsidianAccent.Presets.forEach { accent ->
-                val selected = accent.main == colors.accent
-                Box(
-                    Modifier
-                        .then(if (selected) Modifier.glow(accent.main, CircleShape, ObGlows.Action) else Modifier)
-                        .then(
-                            if (onAccentChange != null) Modifier.pressable(pressedScale = 0.88f) { onAccentChange(accent) }
-                            else Modifier
-                        )
-                        .size(36.dp)
-                        .clip(CircleShape)
-                        .background(accent.swatch)
-                        .border(2.dp, if (selected) Color.White else Color.Transparent, CircleShape)
-                )
-            }
-        }
+        AccentSwatchRow(selected = current, onSelect = { onAccentChange?.invoke(it) })
     }
 }
 
@@ -277,6 +274,65 @@ private fun ButtonsSection() {
                 containerColor = ObsidianTheme.colors.accentContainerStrong,
                 contentColor = ObsidianTheme.colors.accentLight
             )
+        }
+    }
+}
+
+@Composable
+private fun FeedbackSection() {
+    var progress by remember { mutableStateOf(0.35f) }
+    var count by remember { mutableIntStateOf(3) }
+    var query by remember { mutableStateOf("") }
+    var sheetOpen by remember { mutableStateOf(false) }
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        SectionLabel("Feedback")
+        ObProgressBar(visible = true, progress = progress, label = "Importing photos")
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            PillButton("Advance", onClick = { progress = if (progress >= 1f) 0f else (progress + 0.2f).coerceAtMost(1f) })
+            PillButton("Count", onClick = { count += 7 })
+            CountBadge(count)
+            Box(Modifier.weight(1f))
+            CopyPill("482913", onCopy = {})
+        }
+        ObSearchField(query = query, onQueryChange = { query = it }, placeholder = "Search", modifier = Modifier.fillMaxWidth())
+        PillButton("Open sheet", onClick = { sheetOpen = true })
+    }
+    if (sheetOpen) {
+        ObSheet(onDismiss = { sheetOpen = false }, title = "Sheet") {
+            SheetAction("Mark as done", R.drawable.ob_ic_check, onClick = { sheetOpen = false })
+            SheetAction("Delete", R.drawable.ob_ic_close, onClick = { sheetOpen = false }, destructive = true)
+        }
+    }
+}
+
+@Composable
+private fun ListSection() {
+    val c = ObsidianTheme.colors
+    var swipes by remember { mutableIntStateOf(0) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        SectionLabel("Lists")
+        DateDivider("Today")
+        SwipeActionRow(
+            left = SwipeVisual("Delete", R.drawable.ob_ic_close, c.error.copy(alpha = 0.35f)),
+            right = SwipeVisual("Done", R.drawable.ob_ic_check, c.accentContainerStrong),
+            onSwipeLeft = { swipes++ },
+            onSwipeRight = { swipes++ },
+        ) {
+            Row(
+                Modifier.fillMaxWidth().background(c.background).padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                ObAvatar(name = "Ada Lovelace")
+                Column(Modifier.weight(1f)) {
+                    Text("Swipe me", style = ObsidianTheme.typography.bodyLarge, color = c.textPrimary)
+                    Text("Swiped $swipes times", style = ObsidianTheme.typography.body, color = c.textSecondary)
+                }
+                ObAvatarPair(
+                    front = { m, size -> ObAvatar(name = "Grace Hopper", modifier = m, size = size) },
+                    back = { m, size -> ObAvatar(name = null, modifier = m, size = size) },
+                )
+            }
         }
     }
 }

@@ -27,6 +27,13 @@ The first release from this repository.
   declarations changed visibility.
 
 ### Added
+- Components from Messages, made app-independent: `TabPage` and `DetailPage` screen layouts,
+  `ObSheet` and `SheetAction`, `SwipeActionRow`, `ObAvatar` and `ObAvatarPair`, `CountBadge`,
+  `ObProgressBar`, `CopyPill`, `ObSearchField`, `AccentSwatchRow` and `DateDivider`.
+- `FloatingNavBar` can go compact while content scrolls (`compact`, with `rememberCompactNavState`),
+  and take an end `action` and a separate accent `pill` button beside it.
+- `Context.copyToClipboard(label, text, sensitive)`, which hides sensitive clips (codes) from the
+  clipboard preview and history.
 - The public API is recorded in `obsidian/api/obsidian.api`, and the build fails on any change to it
   that isn't recorded.
 

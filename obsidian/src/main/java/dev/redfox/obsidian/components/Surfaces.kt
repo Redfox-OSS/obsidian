@@ -35,6 +35,7 @@ import dev.redfox.obsidian.effects.breathingGlow
 import dev.redfox.obsidian.effects.pressable
 import dev.redfox.obsidian.motion.revealOnEnter
 import dev.redfox.obsidian.theme.ObShapes
+import dev.redfox.obsidian.theme.ObSpacing
 import dev.redfox.obsidian.theme.ObsidianTheme
 
 /**
@@ -208,6 +209,18 @@ public fun EmptyState(
             color = colors.textSecondary,
             textAlign = TextAlign.Center,
             modifier = Modifier.revealOnEnter(2)
+        )
+    }
+}
+
+/** Centred uppercase separator between groups of items by day ("TODAY", "MON, 13 OCT"). */
+@Composable
+public fun DateDivider(label: String, modifier: Modifier = Modifier) {
+    Box(modifier.fillMaxWidth().padding(vertical = ObSpacing.M), contentAlignment = Alignment.Center) {
+        Text(
+            label.uppercase(),
+            style = ObsidianTheme.typography.caption,
+            color = ObsidianTheme.colors.textTertiary,
         )
     }
 }
