@@ -10,7 +10,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -18,9 +17,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -36,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -43,8 +41,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import dev.redfox.obsidian.effects.ObGlows
 import dev.redfox.obsidian.effects.glassEffect
@@ -55,10 +53,15 @@ import dev.redfox.obsidian.theme.ScreenGutter
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 private val NavBarHeight = 64.dp
 private val NavBarBottomGap = 12.dp
-private val IndicatorSize = 48.dp
+private val NavBarInnerPadding = 5.dp
+/** Selected-tab pill height: 5dp clear of the bar's edges. */
+private val HaloHeight = 54.dp
+/** Gap between the pill and its tab's slot edges. */
+private val HaloSideInset = 2.dp
 
 /**
  * Vertical space tab screens must leave at the bottom of their scrolling content so the
@@ -126,7 +129,7 @@ fun FloatingNavBar(
             .padding(start = ScreenGutter, end = ScreenGutter, bottom = NavBarBottomGap),
         contentAlignment = Alignment.Center
     ) {
-        BoxWithConstraints(
+        Box(
             modifier = Modifier
                 .widthIn(max = 420.dp)
                 .fillMaxWidth()
@@ -135,12 +138,11 @@ fun FloatingNavBar(
                 .clip(CircleShape)
                 .glassEffect(colors.navScrim)
                 .border(1.dp, colors.borderStrong, CircleShape)
-                .padding(horizontal = 5.dp),
+                .padding(horizontal = NavBarInnerPadding),
             contentAlignment = Alignment.CenterStart
         ) {
-            val slot = maxWidth / items.size
             if (selectedIndex >= 0) {
-                LiquidIndicator(position = position, slot = slot)
+                LiquidHalo(position = position, count = items.size)
             }
             Row(Modifier.fillMaxWidth().fillMaxHeight(), verticalAlignment = Alignment.CenterVertically) {
                 items.forEachIndexed { index, item ->
@@ -157,31 +159,46 @@ fun FloatingNavBar(
 }
 
 /**
- * The selected-tab halo. It is one shared element (not one per tab) so it can travel: its width
- * grows with its velocity and it flattens slightly, like a drop of liquid being dragged.
+ * The selected-tab halo: one shared pill that fills the tab's slot (less a small inset) and
+ * travels between tabs, so its width grows with its velocity and it flattens slightly, like a
+ * drop of liquid being dragged. Sized and placed in layout, with the stretch in the layer, so a
+ * tab switch never recomposes.
  */
 @Composable
-private fun LiquidIndicator(position: Animatable<Float, AnimationVector1D>, slot: Dp) {
+private fun androidx.compose.foundation.layout.BoxScope.LiquidHalo(
+    position: Animatable<Float, AnimationVector1D>,
+    count: Int,
+) {
     val colors = ObsidianTheme.colors
     Box(
         Modifier
-            .offset {
-                val x = (slot * position.value).toPx() + (slot - IndicatorSize).toPx() / 2f
-                IntOffset(x.toInt(), 0)
+            .matchParentSize()
+            .layout { measurable, constraints ->
+                val slot = constraints.maxWidth.toFloat() / count
+                val height = HaloHeight.roundToPx()
+                val width = (slot - HaloSideInset.toPx() * 2).roundToInt().coerceAtLeast(height)
+                val placeable = measurable.measure(Constraints.fixed(width, height))
+                layout(constraints.maxWidth, constraints.maxHeight) {
+                    val x = (slot * position.value + (slot - width) / 2f).roundToInt()
+                    placeable.placeWithLayer(x, (constraints.maxHeight - height) / 2) {
+                        // Velocity in tabs/second. A pill is already wide, so it stretches at
+                        // most 25% and never runs over its neighbours.
+                        val stretch = (abs(position.velocity) / 18f).coerceAtMost(0.25f)
+                        scaleX = 1f + stretch
+                        scaleY = 1f - stretch * 0.3f
+                    }
+                }
             }
-            .graphicsLayer {
-                position.value // re-run this block every frame of the slide
-                // Velocity is in tabs per second; a fast hop stretches up to ~55% wider.
-                val stretch = (abs(position.velocity) / 9f).coerceAtMost(0.55f)
-                scaleX = 1f + stretch
-                scaleY = 1f - stretch * 0.28f
-            }
-            .size(IndicatorSize)
-            .glow(colors.accentGlow, CircleShape, ObGlows.Halo)
-            .clip(CircleShape)
-            .background(colors.accentContainer)
-            .border(1.dp, colors.accentLight.copy(alpha = 0.4f), CircleShape)
-    )
+    ) {
+        Box(
+            Modifier
+                .matchParentSize()
+                .glow(colors.accentGlow, CircleShape, ObGlows.Halo)
+                .clip(CircleShape)
+                .background(colors.accentContainer)
+                .border(1.dp, colors.accentLight.copy(alpha = 0.4f), CircleShape)
+        )
+    }
 }
 
 @Composable

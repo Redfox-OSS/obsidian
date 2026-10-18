@@ -156,7 +156,7 @@ Modifier.glow(color, shape, radius = 12.dp, spread = 0.dp, offsetY = 0.dp)   // 
 | `Action` | 0.45 | 12 | 0 | primary action pill, selected swatch |
 | `Fab` | 0.45 | 14 | 8 | FAB |
 | `Cta` | 0.30 | 18 | 8 | full-width primary button |
-| `Halo` | 1.0 (use `accentGlow`) | 18 | 0 | nav bar selection bubble |
+| `Halo` | 1.0 (use `accentGlow`) | 18 | 0 | nav bar selection halo |
 | `Ambient` | 0.34 | 32 | 0 | hero / empty-state badge |
 | `Elevation` | 0.35 (use **black**) | 24 | 12 | floating surfaces (nav bar) |
 
@@ -216,7 +216,7 @@ an overshoot (0.42 / 420). Optional `haptic`, `onLongClick` (always long-press h
 
 - **Switch**: thumb stretches 6dp while held (iOS squish), crosses on (0.58 / 520), track color snappy, glow fades in gently, optional dot bounces in.
 - **Segmented pill**: indicator slides (0.6 / 420) and stretches 18% wide / 8% short in transit — "liquid".
-- **Nav bar**: one shared halo travels (0.58 / 300), stretching up to 55% with velocity; each icon plays a `NavIconMotion` — `Pop`, `Shake`, `Flip`, `Press`, `Jelly`, `Turn`.
+- **Nav bar**: one shared halo travels (0.58 / 300) and stretches with its velocity. It's a pill that fills the tab (54dp tall, stretching at most 25%); each icon plays a `NavIconMotion` — `Pop`, `Shake`, `Flip`, `Press`, `Jelly`, `Turn`.
 - **FAB**: pops in from 50% while its glyph twists from −135°.
 
 Keep per-frame work in `graphicsLayer {}` / `placeWithLayer {}` lambdas (draw phase only, no recomposition).
@@ -243,7 +243,7 @@ Keep per-frame work in `graphicsLayer {}` / `placeWithLayer {}` lambdas (draw ph
 | `ObDropdownMenu` / `ObMenuItem` | squircle floating menu |
 | `ObAlertDialog(title, text, confirmLabel, …, destructive)` | card dialog with pill buttons, pops in |
 | `EmptyState(icon, title, subtitle)` | floating, breathing badge with staggered text |
-| `FloatingNavBar(items, selectedIndex, onSelect)` | frosted pill nav; pad content by `floatingNavClearance()` |
+| `FloatingNavBar(items, selectedIndex, onSelect)` | frosted pill nav with a pill selection halo; pad content by `floatingNavClearance()` |
 | `ObsidianShowcase(onAccentChange?)` | style guide screen |
 
 ## 9. Haptics
