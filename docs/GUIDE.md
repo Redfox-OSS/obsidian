@@ -1,7 +1,8 @@
 # Obsidian guide
 
 The full reference for the design system: every token, effect, motion spec and component, and the rules
-for using them. Obsidian is a Jetpack Compose library for Android apps:
+for using them. To set up an app, see [NEW_APP.md](NEW_APP.md) (from scratch) or
+[MIGRATING.md](MIGRATING.md) (an existing app). Obsidian is a Jetpack Compose library for Android apps:
 always-dark surfaces, one vivid accent, soft colored glows, frosted glass, and spring-driven motion
 that's interruptible everywhere.
 
