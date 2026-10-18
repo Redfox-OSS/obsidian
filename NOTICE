@@ -1,0 +1,8 @@
+Obsidian design system
+Copyright 2026 Debayan G (debz-g)
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product bundles the Inter typeface (obsidian/src/main/res/font/ob_inter_variable.ttf),
+Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter), licensed under the
+SIL Open Font License, Version 1.1 (see obsidian/src/main/assets/licenses/Inter-OFL.txt).
