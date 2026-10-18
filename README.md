@@ -1,7 +1,7 @@
 # Obsidian
 
 A dark, glowing design system for Android, built with Jetpack Compose. Obsidian is the shared look of
-[Messages](https://github.com/debz-g/messages), Alarmzy and the apps that follow: always-dark surfaces, one
+[Messages](https://github.com/Redfox-OSS/messages), [Alarmzy](https://github.com/Redfox-OSS/Alarmzy) and the apps that follow: always-dark surfaces, one
 vivid accent, soft colored glows, frosted glass, and spring-driven motion you can interrupt at any point.
 
 - **Tokens:** 5 accents × 3 dark neutral ramps, the Inter type scale, shapes and spacing
@@ -33,7 +33,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://debz-g.github.io/obsidian/maven") {
+        maven("https://redfox-oss.github.io/obsidian/maven") {
             content { includeGroup("dev.redfox") }
         }
     }
@@ -57,7 +57,7 @@ dependencies { implementation(libs.obsidian) }
 
 Compose, Material 3 and Haze come with it.
 
-**As an AAR.** Each [release](https://github.com/debz-g/obsidian/releases) has `obsidian-<version>.aar`
+**As an AAR.** Each [release](https://github.com/Redfox-OSS/obsidian/releases) has `obsidian-<version>.aar`
 attached. Put it in `app/libs/` and add `implementation(files("libs/obsidian-2.0.0.aar"))`. A bare AAR
 doesn't bring its dependencies, so also add the Compose BOM (`2026.02.01`), `androidx.compose.ui:ui`,
 `androidx.compose.ui:ui-graphics`, `androidx.compose.material3:material3` and

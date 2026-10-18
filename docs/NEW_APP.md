@@ -28,7 +28,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://debz-g.github.io/obsidian/maven") {
+        maven("https://redfox-oss.github.io/obsidian/maven") {
             content { includeGroup("dev.redfox") }
         }
     }

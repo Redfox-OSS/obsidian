@@ -84,7 +84,7 @@ expected. Don't add a dependency to the library without discussing it; every app
 - Don't push, tag or release without asking.
 - Releasing: set `version` in `obsidian/build.gradle.kts`, turn the changelog's "unreleased" heading
   into that version, commit, then push a `v<version>` tag. The release workflow publishes to the Maven
-  repository on the `gh-pages` branch (https://debz-g.github.io/obsidian/maven) and attaches the AAR,
+  repository on the `gh-pages` branch (https://redfox-oss.github.io/obsidian/maven) and attaches the AAR,
   sources and catalog APK to a GitHub Release. A released version is never overwritten: fix forward
   with a patch version.
 - Never commit signing keys, `local.properties` or `.claude/settings.local.json`.

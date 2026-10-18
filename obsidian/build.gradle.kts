@@ -47,7 +47,7 @@ publishing {
             pom {
                 name.set("Obsidian")
                 description.set("A dark, glowing design system for Android, built with Jetpack Compose.")
-                url.set("https://github.com/debz-g/obsidian")
+                url.set("https://github.com/Redfox-OSS/obsidian")
                 licenses {
                     license {
                         name.set("Apache License 2.0")
@@ -62,8 +62,8 @@ publishing {
                     }
                 }
                 scm {
-                    url.set("https://github.com/debz-g/obsidian")
-                    connection.set("scm:git:https://github.com/debz-g/obsidian.git")
+                    url.set("https://github.com/Redfox-OSS/obsidian")
+                    connection.set("scm:git:https://github.com/Redfox-OSS/obsidian.git")
                 }
             }
         }
