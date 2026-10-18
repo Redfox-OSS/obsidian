@@ -24,31 +24,51 @@ The full reference (every value, motion spec and usage rule) is in **[docs/GUIDE
 
 ## Install
 
-Obsidian isn't on Maven Central yet. Until it is, build it from source in one of two ways.
+Obsidian is published from this repository; no account or token is needed to use it.
 
-**Composite build (recommended).** Clone this repo next to your app, then in the app's `settings.gradle.kts`:
+**From the Maven repository (recommended).** Add the repository in `settings.gradle.kts`:
 
 ```kotlin
-includeBuild("../obsidian")
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://debz-g.github.io/obsidian/maven") {
+            content { includeGroup("dev.redfox") }
+        }
+    }
+}
+```
+
+then the dependency, for example through the version catalog:
+
+```toml
+[versions]
+obsidian = "2.0.0"
+
+[libraries]
+obsidian = { group = "dev.redfox", name = "obsidian", version.ref = "obsidian" }
 ```
 
 ```kotlin
 // app/build.gradle.kts
-dependencies { implementation("dev.redfox:obsidian:2.0.0") }
+dependencies { implementation(libs.obsidian) }
 ```
 
-Gradle swaps the dependency for the local source, so changes to Obsidian show up in the app on the next build.
+Compose, Material 3 and Haze come with it.
 
-**Local Maven.** Publish once, then depend on it from any app on the same machine:
+**As an AAR.** Each [release](https://github.com/debz-g/obsidian/releases) has `obsidian-<version>.aar`
+attached. Put it in `app/libs/` and add `implementation(files("libs/obsidian-2.0.0.aar"))`. A bare AAR
+doesn't bring its dependencies, so also add the Compose BOM (`2026.02.01`), `androidx.compose.ui:ui`,
+`androidx.compose.ui:ui-graphics`, `androidx.compose.material3:material3` and
+`dev.chrisbanes.haze:haze:1.7.2`.
 
-```bash
-./gradlew :obsidian:publishToMavenLocal
-```
+**From source, while changing Obsidian and an app together.** Clone this repository next to the app and
+add `includeBuild("../obsidian")` to the app's `settings.gradle.kts`. Gradle uses the local source in place
+of the published `dev.redfox:obsidian`, so changes show up on the next build.
 
-```kotlin
-// settings.gradle.kts → dependencyResolutionManagement.repositories
-mavenLocal { content { includeGroup("dev.redfox") } }
-```
+New to Obsidian? [docs/NEW_APP.md](docs/NEW_APP.md) sets up an app from scratch;
+[docs/MIGRATING.md](docs/MIGRATING.md) moves an existing app over.
 
 ## Quick start
 
@@ -89,6 +109,16 @@ CI builds the catalog APK on every push; download it from the run's artifacts.
 
 The build compiles the library, runs its tests and Android lint, and checks the public API against
 `obsidian/api/obsidian.api`. CI runs the same on every push and pull request.
+
+## Releasing
+
+1. Set `version` in `obsidian/build.gradle.kts`, and turn the changelog's "unreleased" heading into
+   that version.
+2. Commit, then tag and push: `git tag v2.0.0 && git push origin v2.0.0`.
+
+The release workflow checks the tag matches the version, builds and tests, adds the version to the
+Maven repository on GitHub Pages (never overwriting a released version), and creates a GitHub Release
+with the AAR, its sources and the catalog APK.
 
 ## Contributing
 

@@ -44,6 +44,39 @@ publishing {
         register<MavenPublication>("release") {
             artifactId = "obsidian"
             afterEvaluate { from(components["release"]) }
+            pom {
+                name.set("Obsidian")
+                description.set("A dark, glowing design system for Android, built with Jetpack Compose.")
+                url.set("https://github.com/debz-g/obsidian")
+                licenses {
+                    license {
+                        name.set("Apache License 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("debz-g")
+                        name.set("Debayan G")
+                        url.set("https://github.com/debz-g")
+                    }
+                }
+                scm {
+                    url.set("https://github.com/debz-g/obsidian")
+                    connection.set("scm:git:https://github.com/debz-g/obsidian.git")
+                }
+            }
+        }
+    }
+    repositories {
+        // The Maven repository on GitHub Pages: the release workflow checks out the gh-pages
+        // branch and passes its maven/ folder as -PreleaseRepo, so each release adds to it.
+        val releaseRepo = providers.gradleProperty("releaseRepo")
+        if (releaseRepo.isPresent) {
+            maven {
+                name = "release"
+                url = uri(releaseRepo.get())
+            }
         }
     }
 }
