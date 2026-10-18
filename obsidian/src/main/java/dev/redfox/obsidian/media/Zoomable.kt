@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.isSpecified
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
@@ -53,6 +54,8 @@ public class ZoomState(
 
     /** Applies one pinch/pan step, keeping the point under the fingers ([centroid]) in place. */
     internal fun transform(zoom: Float, pan: Offset, centroid: Offset) {
+        // The event that lifts the last finger has no centroid; applying it would make the offset NaN.
+        if (!centroid.isSpecified) return
         val newScale = (scale * zoom).coerceIn(1f, maxScale)
         val center = Offset(size.width / 2, size.height / 2)
         val anchor = centroid - center
@@ -119,7 +122,7 @@ public fun Zoomable(
                     do {
                         val event = awaitPointerEvent()
                         val fingers = event.changes.count { it.pressed }
-                        if (fingers >= 2 || state.isZoomed) {
+                        if (fingers > 0 && (fingers >= 2 || state.isZoomed)) {
                             state.size = size.toSize()
                             state.transform(event.calculateZoom(), event.calculatePan(), event.calculateCentroid(useCurrent = true))
                             event.changes.forEach { if (it.positionChanged()) it.consume() }

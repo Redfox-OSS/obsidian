@@ -93,7 +93,7 @@ public fun KeypadKey(
         } else {
             Text(
                 label,
-                style = if (style == KeypadKeyStyle.Digit) type.numericMedium else type.title,
+                style = if (style == KeypadKeyStyle.Function) type.title else type.numericMedium,
                 color = content,
                 maxLines = 1,
             )

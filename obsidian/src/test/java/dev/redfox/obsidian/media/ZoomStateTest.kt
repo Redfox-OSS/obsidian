@@ -56,4 +56,15 @@ class ZoomStateTest {
         z.transform(zoom = 1f, pan = Offset(300f, 300f), centroid = Offset(500f, 1000f))
         assertEquals(Offset.Zero, z.offset)
     }
+
+    @Test
+    fun `lifting the last finger leaves the zoom as it was`() {
+        val z = state()
+        z.transform(zoom = 2f, pan = Offset.Zero, centroid = Offset(500f, 1000f))
+        z.transform(zoom = 1f, pan = Offset(100f, 0f), centroid = Offset(600f, 1000f))
+        z.transform(zoom = 1f, pan = Offset.Zero, centroid = Offset.Unspecified)
+        assertEquals(2f, z.scale, 0.001f)
+        assertEquals(100f, z.offset.x, 0.5f)
+        assertEquals(0f, z.offset.y, 0.5f)
+    }
 }
