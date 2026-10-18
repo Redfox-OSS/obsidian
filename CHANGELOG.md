@@ -32,7 +32,10 @@ The first release from this repository.
   `ObProgressBar`, `CopyPill`, `ObSearchField`, `AccentSwatchRow` and `DateDivider`.
 - `FloatingNavBar` can go compact while content scrolls (`compact`, with `rememberCompactNavState`),
   and take an end `action` and a separate accent `pill` button beside it.
-- `Context.copyToClipboard(label, text, sensitive)`, which hides sensitive clips (codes) from the
+- Motion tokens: `ObDurations` (Exit, Short, Enter, Long) for timed fades, and `ObTransitions`
+  screen transitions (`push`, `pop`, `predictivePop`, `tab`) plus a `sharedBounds` spring for
+  shared elements. They plug into Navigation 3's `NavDisplay` or any `AnimatedContent`.
+- - `Context.copyToClipboard(label, text, sensitive)`, which hides sensitive clips (codes) from the
   clipboard preview and history.
 - The public API is recorded in `obsidian/api/obsidian.api`, and the build fails on any change to it
   that isn't recorded.

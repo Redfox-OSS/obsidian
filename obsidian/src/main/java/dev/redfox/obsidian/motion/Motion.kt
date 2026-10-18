@@ -68,6 +68,21 @@ public object ObMotion {
     public const val MaxStaggerIndex: Int = 9
 }
 
+/**
+ * Durations for the few time-based animations: fades and choreographed entrances. Anything
+ * that moves or resizes uses an [ObMotion] spring instead.
+ */
+public object ObDurations {
+    /** Something leaving: gone before the newcomer has fully arrived. */
+    public const val Exit: Int = 120
+    /** Small swaps: labels, icons, copied confirmations. */
+    public const val Short: Int = 160
+    /** Something arriving: a screen, a sheet's content, a revealed row. */
+    public const val Enter: Int = 220
+    /** Slow fades that shouldn't draw the eye (a finished progress bar folding away). */
+    public const val Long: Int = 320
+}
+
 // ---------------------------------------------------------------------------------------------
 // Staggered entrance
 // ---------------------------------------------------------------------------------------------

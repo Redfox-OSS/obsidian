@@ -191,6 +191,40 @@ Everything interactive is a **spring** (interruptible mid-flight); only choreogr
 | `EaseOutEmphasized` | cubic (0.05, 0.7, 0.1, 1) | — | staggered column entrances |
 | `StaggerMillis` / `MaxStaggerIndex` | 38ms / 9 | — | list stagger step / cap |
 
+### Durations — `ObDurations`
+
+Only fades and choreographed entrances are timed; anything that moves or resizes is a spring.
+
+| Token | ms | For |
+|---|---|---|
+| `Exit` | 120 | something leaving (gone before the newcomer fully arrives) |
+| `Short` | 160 | small swaps: labels, icons, "Copied" |
+| `Enter` | 220 | something arriving: a screen, revealed content |
+| `Long` | 320 | quiet fades that shouldn't draw the eye |
+
+### Screen transitions — `ObTransitions`
+
+Quiet on purpose: the new screen drifts a short way (a spring, 0.9 / 240) while it fades in; the old
+one just fades. Each is a `ContentTransform`, so it plugs into Navigation 3, Navigation Compose or
+`AnimatedContent`.
+
+| Transition | Motion |
+|---|---|
+| `push()` | new screen drifts in 1/12 of the width from the end + fades in (`Enter`); old fades out (`Exit`) |
+| `pop()` / `predictivePop()` | parent fades in (`Enter`); closing screen drifts 1/12 toward the end + fades (`Short`); the spring lets predictive back scrub it |
+| `tab(forward)` | new tab drifts 1/24 from its side + fades in; old fades out |
+| `sharedBounds` | shared-element bounds (thumbnail → full screen): no-bounce spring, stiffness 380 |
+
+```kotlin
+NavDisplay(
+    backStack = backStack,
+    transitionSpec = { ObTransitions.push() },
+    popTransitionSpec = { ObTransitions.pop() },
+    predictivePopTransitionSpec = { ObTransitions.predictivePop() },
+    entryProvider = …,
+)
+```
+
 ### Press feedback — `Modifier.pressable { }`
 
 Replaces ripple everywhere: sinks to `pressedScale` (default 0.97) with a firm spring (1.0 / 900), releases with

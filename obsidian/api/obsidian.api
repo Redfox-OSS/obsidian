@@ -183,6 +183,15 @@ public final class dev/redfox/obsidian/motion/MotionKt {
 	public static final fun revealOnEnter-6a0pyJM (Landroidx/compose/ui/Modifier;IFLandroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
 }
 
+public final class dev/redfox/obsidian/motion/ObDurations {
+	public static final field $stable I
+	public static final field Enter I
+	public static final field Exit I
+	public static final field INSTANCE Ldev/redfox/obsidian/motion/ObDurations;
+	public static final field Long I
+	public static final field Short I
+}
+
 public final class dev/redfox/obsidian/motion/ObMotion {
 	public static final field $stable I
 	public static final field INSTANCE Ldev/redfox/obsidian/motion/ObMotion;
@@ -192,6 +201,16 @@ public final class dev/redfox/obsidian/motion/ObMotion {
 	public final fun gentle ()Landroidx/compose/animation/core/SpringSpec;
 	public final fun getEaseOutEmphasized ()Landroidx/compose/animation/core/Easing;
 	public final fun snappy ()Landroidx/compose/animation/core/SpringSpec;
+}
+
+public final class dev/redfox/obsidian/motion/ObTransitions {
+	public static final field $stable I
+	public static final field INSTANCE Ldev/redfox/obsidian/motion/ObTransitions;
+	public final fun getSharedBounds ()Landroidx/compose/animation/BoundsTransform;
+	public final fun pop ()Landroidx/compose/animation/ContentTransform;
+	public final fun predictivePop ()Landroidx/compose/animation/ContentTransform;
+	public final fun push ()Landroidx/compose/animation/ContentTransform;
+	public final fun tab (Z)Landroidx/compose/animation/ContentTransform;
 }
 
 public final class dev/redfox/obsidian/motion/RevealGate {

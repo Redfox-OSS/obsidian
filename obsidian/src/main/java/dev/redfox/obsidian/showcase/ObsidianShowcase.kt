@@ -1,5 +1,6 @@
 package dev.redfox.obsidian.showcase
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
@@ -66,6 +67,7 @@ import dev.redfox.obsidian.effects.ObGlows
 import dev.redfox.obsidian.effects.breathingGlow
 import dev.redfox.obsidian.effects.glassSource
 import dev.redfox.obsidian.effects.glow
+import dev.redfox.obsidian.motion.ObTransitions
 import dev.redfox.obsidian.motion.RevealColumn
 import dev.redfox.obsidian.motion.RevealScope
 import dev.redfox.obsidian.motion.RollingText
@@ -106,6 +108,7 @@ public fun ObsidianShowcase(
                 ButtonsSection()
                 FeedbackSection()
                 ListSection()
+                TransitionsSection()
             }
             LargeHeader(title = "Obsidian")
         }
@@ -333,6 +336,43 @@ private fun ListSection() {
                     back = { m, size -> ObAvatar(name = null, modifier = m, size = size) },
                 )
             }
+        }
+    }
+}
+
+/** A screen in the transitions demo: its depth in a stack, and which tab it belongs to. */
+private data class DemoScreen(val tab: Int, val depth: Int)
+
+@Composable
+private fun TransitionsSection() {
+    val c = ObsidianTheme.colors
+    var screen by remember { mutableStateOf(DemoScreen(tab = 0, depth = 0)) }
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        SectionLabel("Transitions")
+        AnimatedContent(
+            targetState = screen,
+            transitionSpec = {
+                when {
+                    targetState.tab != initialState.tab -> ObTransitions.tab(forward = targetState.tab > initialState.tab)
+                    targetState.depth > initialState.depth -> ObTransitions.push()
+                    else -> ObTransitions.pop()
+                }
+            },
+            label = "demoScreen",
+        ) { shown ->
+            ObCard(Modifier.fillMaxWidth()) {
+                Text("Tab ${shown.tab + 1}", style = ObsidianTheme.typography.caption, color = c.textTertiary)
+                Text(
+                    if (shown.depth == 0) "Top level" else "Pushed screen ${shown.depth}",
+                    style = ObsidianTheme.typography.title,
+                    color = c.textPrimary,
+                )
+            }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            PillButton("Push", onClick = { screen = screen.copy(depth = screen.depth + 1) })
+            PillButton("Back", onClick = { if (screen.depth > 0) screen = screen.copy(depth = screen.depth - 1) })
+            PillButton("Next tab", onClick = { screen = DemoScreen(tab = (screen.tab + 1) % 3, depth = 0) })
         }
     }
 }
