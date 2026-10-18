@@ -1,0 +1,19 @@
+*.iml
+.gradle
+.kotlin
+.idea
+.DS_Store
+build/
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Release signing secrets
+*.jks
+*.keystore
+*.gpg
+secring.*
+
+# Local Claude Code settings (per machine)
+.claude/settings.local.json

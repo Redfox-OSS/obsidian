@@ -1,10 +1,11 @@
-# Obsidian — design system
+# Obsidian guide
 
-The Alarmzy look, extracted into a standalone Jetpack Compose library you can drop into any Android app:
+The full reference for the design system: every token, effect, motion spec and component, and the rules
+for using them. Obsidian is a Jetpack Compose library for Android apps:
 always-dark surfaces, one vivid accent, soft colored glows, frosted glass, and spring-driven motion
 that's interruptible everywhere.
 
-- **Module:** `:obsidian` · **package:** `dev.redfox.obsidian` · **min SDK** 31
+- **Artifact:** `dev.redfox:obsidian` · **package:** `dev.redfox.obsidian` · **min SDK** 31
 - **Depends on (exposed as `api`):** Compose BOM, Material 3, [Haze](https://github.com/chrisbanes/haze) 1.7.x
 - **Font:** Inter (variable TTF, bundled; OFL license in `assets/licenses/Inter-OFL.txt`)
 - **Living style guide:** `ObsidianShowcase()` — every token and component on one screen
@@ -21,39 +22,9 @@ obsidian/src/main/java/dev/redfox/obsidian/
 
 ---
 
-## 1. Using it in another app
+## 1. Setup
 
-### Option A — source module (simplest, keeps you editing one copy)
-
-Copy (or `git submodule` / symlink) the `obsidian/` folder into the other project, then:
-
-```kotlin
-// settings.gradle.kts
-include(":obsidian")
-
-// app/build.gradle.kts
-dependencies { implementation(project(":obsidian")) }
-```
-
-The module reads `libs.versions.toml` aliases: `android-library`, `kotlin-compose`, `androidx-compose-bom`,
-`androidx-compose-ui`, `androidx-compose-ui-graphics`, `androidx-compose-material3`,
-`androidx-compose-ui-tooling(-preview)` and `haze`. Copy those entries if the host catalog lacks them.
-
-### Option B — Maven artifact
-
-```bash
-./gradlew :obsidian:publishToMavenLocal
-```
-
-```kotlin
-// other app: settings.gradle.kts → repositories { mavenLocal() }
-dependencies { implementation("dev.redfox:obsidian:1.0.0") }
-```
-
-Bump `version` in `obsidian/build.gradle.kts` when you change it. The same `publishing {}` block works with
-GitHub Packages or any Maven repo by adding a `repositories {}` target.
-
-### Root setup
+Add the library as described in the [README](../README.md#install), then wrap your app in the theme:
 
 ```kotlin
 setContent {

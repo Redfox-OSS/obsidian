@@ -1,0 +1,30 @@
+[versions]
+# Apps that use Obsidian build on the same toolchain: AGP 9.2 / Kotlin 2.2.10 / Compose BOM 2026.02.01.
+agp = "9.2.1"
+kotlin = "2.2.10"
+composeBom = "2026.02.01"
+# 1.7.2 is the newest Haze built against Compose 1.10 / Kotlin 2.2 (2.x needs Compose 1.12 + Kotlin 2.4).
+haze = "1.7.2"
+junit = "4.13.2"
+
+[libraries]
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref = "haze" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+# Gradle plugins, for the build-logic convention plugins
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+# Convention plugins (build-logic)
+obsidian-android-library = { id = "obsidian.android.library" }
+obsidian-android-compose = { id = "obsidian.android.compose" }

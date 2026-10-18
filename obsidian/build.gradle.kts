@@ -1,35 +1,20 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.obsidian.android.library)
+    alias(libs.plugins.obsidian.android.compose)
     `maven-publish`
 }
 
-// Obsidian — the Alarmzy design system as a standalone Compose library.
-// Consume it from another app either as a source module (copy/include this folder) or via
-// `./gradlew :obsidian:publishToMavenLocal` → implementation("dev.redfox:obsidian:<version>").
+// Obsidian: the shared design system, as a standalone Compose library.
 group = "dev.redfox"
 version = "1.0.0"
 
 android {
     namespace = "dev.redfox.obsidian"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
     // Library resources (font, icons) are prefixed so they never clash with a host app's.
     resourcePrefix = "ob_"
 
     defaultConfig {
-        minSdk = 31
         consumerProguardFiles("consumer-rules.pro")
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    buildFeatures {
-        compose = true
     }
     publishing {
         singleVariant("release") {
@@ -46,8 +31,6 @@ dependencies {
     api(libs.androidx.compose.ui.graphics)
     api(libs.androidx.compose.material3)
     api(libs.haze)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
 publishing {
