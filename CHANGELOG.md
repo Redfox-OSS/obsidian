@@ -32,6 +32,11 @@ The first release from this repository.
   `ObProgressBar`, `CopyPill`, `ObSearchField`, `AccentSwatchRow` and `DateDivider`.
 - `FloatingNavBar` can go compact while content scrolls (`compact`, with `rememberCompactNavState`),
   and take an end `action` and a separate accent `pill` button beside it.
+- Components for more kinds of app: `ObTextField`, `ObSlider`, `ObRadioButton`, `ObTabRow`,
+  `ObSpinner`, `Modifier.shimmer` and `Placeholder`, `ObSnackbarState` and `ObSnackbarHost`
+  (snackbars and toasts), `CollapsingHeader` with `rememberHeaderCollapse`, and `KeypadKey`.
+- Media (`dev.redfox.obsidian.media`): `MediaTile` for photo grids with selection, `Zoomable`
+  with `ZoomState` for pinch and double-tap zoom, and `ViewerScaffold` for full-screen viewers.
 - Motion tokens: `ObDurations` (Exit, Short, Enter, Long) for timed fades, and `ObTransitions`
   screen transitions (`push`, `pop`, `predictivePop`, `tab`) plus a `sharedBounds` spring for
   shared elements. They plug into Navigation 3's `NavDisplay` or any `AnimatedContent`.

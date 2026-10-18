@@ -13,10 +13,12 @@ that's interruptible everywhere.
 ```
 obsidian/src/main/java/dev/redfox/obsidian/
 ├── theme/        ObsidianTheme, ObsidianColors (+ Accent/Neutrals presets), ObsidianTypography, ObShapes, ObSpacing
-├── effects/      glow + ObGlows presets, breathingGlow, ambientFloat, glassSource/glassEffect, pressable
+├── effects/      glow + ObGlows presets, breathingGlow, ambientFloat, glassSource/glassEffect, pressable, shimmer, Placeholder
 ├── motion/       ObMotion springs, RevealScope/revealOnEnter/RevealColumn, popIn, popOnSelect, RollingText, transitions
 ├── components/   buttons, switch, checkbox, pills, segmented control, cards, rows, headers, pages, menus, dialogs,
-│                 sheets, swipe rows, avatars, badges, progress, copy pill, search field, accent picker, empty state
+│                 sheets, swipe rows, avatars, badges, progress, spinner, snackbar, copy pill, search field, text field,
+│                 slider, radio, tabs, collapsing header, keypad key, accent picker, empty state
+├── media/        MediaTile, Zoomable + ZoomState, ViewerScaffold
 ├── navigation/   FloatingNavBar (liquid indicator, per-icon motion, compact mode), rememberCompactNavState, floatingNavClearance()
 ├── platform/     copyToClipboard
 └── showcase/     ObsidianShowcase
@@ -289,6 +291,18 @@ Keep per-frame work in `graphicsLayer {}` / `placeWithLayer {}` lambdas (draw ph
 | `ObSearchField(query, onQueryChange, placeholder, onSearch)` | floating search pill with clear button and a keyboard search key |
 | `AccentSwatchRow(selected, onSelect, accents)` | accent picker; selected swatch glows, rings and pops |
 | `DateDivider(label)` | centred uppercase day separator |
+| `ObTextField(value, onValueChange, placeholder, label, supportingText, isError, singleLine, leadingIcon, trailing)` | `cardInner` field; border lights to `accentBorder` on focus (snappy), `error` when wrong; pill when single-line, card when multi-line |
+| `ObSlider(value, onValueChange, valueRange, steps)` | hairline `tile` track, accent fill, white thumb that swells while held; tap or drag; steps snap with a `SegmentTick` each |
+| `ObRadioButton(selected, onClick)` | 24dp ring; accent dot bounces in, `Checkbox` glow when selected |
+| `ObTabRow(tabs, selectedIndex, onSelect)` | equal-width text tabs; the accent bar travels on a spring and stretches with speed |
+| `ObSpinner(size, strokeWidth)` | accent arc spinning with a breathing length over a faint ring; for unknown durations |
+| `Modifier.shimmer()` / `Placeholder(shape)` | soft sweep of light over loading content; a shimmering `tile` stand-in |
+| `ObSnackbarState.show(message, actionLabel)` / `ObSnackbarHost(state, bottomPadding)` | one at a time, queued; frosted floating pill that rises and pops in. No action = a toast (2.5s); with an action 5s |
+| `CollapsingHeader(title, collapse, actions)` + `rememberHeaderCollapse(listState \| gridState \| scrollState)` | big title (1.6×) that shrinks into a `LargeHeader` over the first 48dp of scroll; all in layout, no recomposition. Pad content by status bar + `CollapsingHeaderExpandedHeight` (112) |
+| `KeypadKey(label, onClick, style, selected, icon)` | calculator / dial-pad key: `Digit` (card, numeric type), `Function` (tileHigh), `Operator` (accent container; solid while pending), `Primary` (= : solid accent + `Action` glow); `KeyboardTap` haptic |
+| `MediaTile(onClick, onLongClick, selectionMode, selected, label) { image }` | square grid cell; selected tiles shrink to 86% with rounder corners and a check; `label` for video length |
+| `Zoomable(state, onTap) { }` / `rememberZoomState(maxScale, doubleTapScale)` | pinch zoom (1–5×) around the fingers, pan while zoomed, double-tap zoom; leaves 1× swipes to a pager (`state.isZoomed`) |
+| `ViewerScaffold(chromeVisible, onBack, title, actions, bottomBar) { }` | full-screen black viewer; top and bottom bars over gradients slide away when chrome is hidden |
 | `FloatingNavBar(items, selectedIndex, onSelect, compact, action, pill)` | frosted pill nav with a pill selection halo; optional compact mode (`rememberCompactNavState`), end action and side accent button; pad content by `floatingNavClearance()` |
 | `ObsidianShowcase(onAccentChange?)` | style guide screen |
 
@@ -299,6 +313,8 @@ Keep per-frame work in `graphicsLayer {}` / `placeWithLayer {}` lambdas (draw ph
 | Switch / checkbox | `ToggleOn` / `ToggleOff` |
 | Chip, pill, segment, tab change | `SegmentTick` |
 | Primary CTA | `Confirm` |
+| Keypad key | `KeyboardTap` |
+| Slider step | `SegmentTick` |
 | FAB, action pill, re-tap current tab | `ContextClick` |
 | Long press | `LongPress` (automatic in `pressable`) |
 

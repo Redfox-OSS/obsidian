@@ -7,7 +7,8 @@ vivid accent, soft colored glows, frosted glass, and spring-driven motion you ca
 - **Tokens:** 5 accents × 3 dark neutral ramps, the Inter type scale, shapes and spacing
 - **Effects:** colored glows, frosted glass (via [Haze](https://github.com/chrisbanes/haze)), press feedback that replaces ripples
 - **Motion:** shared springs, staggered entrances that never replay while scrolling, odometer digits, liquid selection indicators
-- **Components:** buttons, switch, checkbox, pills, segmented control, cards, list rows, frosted headers and page layouts, menus, dialogs, sheets, swipe rows, avatars, badges, progress, copy pill, search field, accent picker, empty state, and a floating nav bar that can go compact on scroll
+- **Components:** buttons, switch, checkbox, pills, segmented control, cards, list rows, frosted headers and page layouts, menus, dialogs, sheets, swipe rows, avatars, badges, progress and spinners, snackbars, text fields, sliders, radio buttons, tabs, a collapsing header, keypad keys, copy pill, search field, accent picker, empty state, and a floating nav bar that can go compact on scroll
+- **Media:** photo grid tiles with selection, pinch and double-tap zoom, and a full-screen viewer
 - **Style guide:** `ObsidianShowcase()` shows every token and component on one screen
 
 The full reference (every value, motion spec and usage rule) is in **[docs/GUIDE.md](docs/GUIDE.md)**.

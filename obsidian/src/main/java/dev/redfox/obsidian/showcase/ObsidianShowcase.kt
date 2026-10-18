@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -25,10 +27,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -37,12 +43,14 @@ import dev.redfox.obsidian.R
 import dev.redfox.obsidian.components.AccentSwatchRow
 import dev.redfox.obsidian.components.ActionPillButton
 import dev.redfox.obsidian.components.ChoicePill
+import dev.redfox.obsidian.components.CollapsingHeader
+import dev.redfox.obsidian.components.CollapsingHeaderExpandedHeight
 import dev.redfox.obsidian.components.CopyPill
 import dev.redfox.obsidian.components.CountBadge
 import dev.redfox.obsidian.components.DateDivider
 import dev.redfox.obsidian.components.DayChip
-import dev.redfox.obsidian.components.LargeHeader
-import dev.redfox.obsidian.components.LargeHeaderHeight
+import dev.redfox.obsidian.components.KeypadKey
+import dev.redfox.obsidian.components.KeypadKeyStyle
 import dev.redfox.obsidian.components.ObAvatar
 import dev.redfox.obsidian.components.ObAvatarPair
 import dev.redfox.obsidian.components.ObCard
@@ -51,9 +59,16 @@ import dev.redfox.obsidian.components.ObDivider
 import dev.redfox.obsidian.components.ObFab
 import dev.redfox.obsidian.components.ObListRow
 import dev.redfox.obsidian.components.ObProgressBar
+import dev.redfox.obsidian.components.ObRadioButton
 import dev.redfox.obsidian.components.ObSearchField
 import dev.redfox.obsidian.components.ObSheet
+import dev.redfox.obsidian.components.ObSlider
+import dev.redfox.obsidian.components.ObSnackbarHost
+import dev.redfox.obsidian.components.ObSnackbarState
+import dev.redfox.obsidian.components.ObSpinner
 import dev.redfox.obsidian.components.ObSwitch
+import dev.redfox.obsidian.components.ObTabRow
+import dev.redfox.obsidian.components.ObTextField
 import dev.redfox.obsidian.components.PillButton
 import dev.redfox.obsidian.components.PrimaryButton
 import dev.redfox.obsidian.components.SectionLabel
@@ -62,11 +77,16 @@ import dev.redfox.obsidian.components.SegmentedPill
 import dev.redfox.obsidian.components.SheetAction
 import dev.redfox.obsidian.components.SwipeActionRow
 import dev.redfox.obsidian.components.SwipeVisual
+import dev.redfox.obsidian.components.rememberHeaderCollapse
 import dev.redfox.obsidian.effects.GlowSpec
 import dev.redfox.obsidian.effects.ObGlows
+import dev.redfox.obsidian.effects.Placeholder
 import dev.redfox.obsidian.effects.breathingGlow
 import dev.redfox.obsidian.effects.glassSource
 import dev.redfox.obsidian.effects.glow
+import dev.redfox.obsidian.media.MediaTile
+import dev.redfox.obsidian.media.ViewerScaffold
+import dev.redfox.obsidian.media.Zoomable
 import dev.redfox.obsidian.motion.ObTransitions
 import dev.redfox.obsidian.motion.RevealColumn
 import dev.redfox.obsidian.motion.RevealScope
@@ -75,6 +95,7 @@ import dev.redfox.obsidian.theme.ObShapes
 import dev.redfox.obsidian.theme.ObsidianAccent
 import dev.redfox.obsidian.theme.ObsidianTheme
 import dev.redfox.obsidian.theme.ScreenGutter
+import kotlinx.coroutines.launch
 
 /**
  * A living style guide: every token and component on one scrolling page. Drop it into a debug
@@ -89,15 +110,18 @@ public fun ObsidianShowcase(
     val colors = ObsidianTheme.colors
     val topInset = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
 
+    val scroll = rememberScrollState()
+    val snackbars = remember { ObSnackbarState() }
+    var viewerOpen by remember { mutableStateOf(false) }
     RevealScope {
         Box(modifier.fillMaxSize().background(colors.background)) {
             RevealColumn(
                 modifier = Modifier
                     .glassSource()
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scroll)
                     .padding(horizontal = ScreenGutter)
-                    .padding(top = topInset + LargeHeaderHeight + 8.dp, bottom = 120.dp),
+                    .padding(top = topInset + CollapsingHeaderExpandedHeight + 8.dp, bottom = 120.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 AccentSection(onAccentChange)
@@ -108,9 +132,15 @@ public fun ObsidianShowcase(
                 ButtonsSection()
                 FeedbackSection()
                 ListSection()
+                InputsSection()
+                LoadingSection(snackbars)
+                MediaSection(onOpenViewer = { viewerOpen = true })
+                KeypadSection()
                 TransitionsSection()
             }
-            LargeHeader(title = "Obsidian")
+            CollapsingHeader(title = "Obsidian", collapse = rememberHeaderCollapse(scroll))
+            ObSnackbarHost(snackbars, Modifier.align(Alignment.BottomCenter).navigationBarsPadding())
+            if (viewerOpen) DemoViewer(onBack = { viewerOpen = false })
         }
     }
 }
@@ -335,6 +365,150 @@ private fun ListSection() {
                     front = { m, size -> ObAvatar(name = "Grace Hopper", modifier = m, size = size) },
                     back = { m, size -> ObAvatar(name = null, modifier = m, size = size) },
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun InputsSection() {
+    var name by remember { mutableStateOf("") }
+    var note by remember { mutableStateOf("") }
+    var volume by remember { mutableStateOf(0.6f) }
+    var level by remember { mutableStateOf(2f) }
+    var choice by remember { mutableIntStateOf(0) }
+    var tab by remember { mutableIntStateOf(0) }
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        SectionLabel("Inputs")
+        ObTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = "Album name",
+            placeholder = "Summer 2026",
+            isError = name.length > 20,
+            supportingText = if (name.length > 20) "Keep it under 20 characters" else null,
+        )
+        ObTextField(value = note, onValueChange = { note = it }, placeholder = "A longer note…", singleLine = false)
+        ObSlider(value = volume, onValueChange = { volume = it })
+        ObSlider(value = level, onValueChange = { level = it }, valueRange = 0f..4f, steps = 3)
+        ObCard {
+            listOf("Date taken", "Date added", "Name").forEachIndexed { i, label ->
+                ObListRow(title = label, onClick = { choice = i }) {
+                    ObRadioButton(selected = choice == i, onClick = null)
+                }
+            }
+        }
+        ObTabRow(tabs = listOf("Photos", "Albums", "Places"), selectedIndex = tab, onSelect = { tab = it })
+    }
+}
+
+@Composable
+private fun LoadingSection(snackbars: ObSnackbarState) {
+    val scope = rememberCoroutineScope()
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        SectionLabel("Loading and messages")
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            ObSpinner()
+            ObSpinner(size = 40.dp, strokeWidth = 3.dp)
+            Placeholder(Modifier.weight(1f).height(40.dp))
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            PillButton("Toast", onClick = { scope.launch { snackbars.show("Saved to Favourites") } })
+            PillButton("Snackbar", onClick = { scope.launch { snackbars.show("Photo deleted", actionLabel = "Undo") } })
+        }
+    }
+}
+
+@Composable
+private fun MediaSection(onOpenViewer: () -> Unit) {
+    var selecting by remember { mutableStateOf(false) }
+    var selected by remember { mutableStateOf(setOf<Int>()) }
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        SectionLabel("Media")
+        listOf(0..2, 3..5).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                row.forEach { i ->
+                    MediaTile(
+                        onClick = {
+                            if (selecting) selected = if (i in selected) selected - i else selected + i
+                            else onOpenViewer()
+                        },
+                        onLongClick = { selecting = true; selected = selected + i },
+                        selectionMode = selecting,
+                        selected = i in selected,
+                        label = if (i == 4) "0:42" else null,
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        if (i == 5) Placeholder(Modifier.fillMaxSize(), RectangleShape) else DemoPhoto(i, Modifier.fillMaxSize())
+                    }
+                }
+            }
+        }
+        if (selecting) PillButton("Done", onClick = { selecting = false; selected = emptySet() })
+    }
+}
+
+/** A stand-in photo: a gradient in two accent-ish tones. */
+@Composable
+private fun DemoPhoto(seed: Int, modifier: Modifier = Modifier) {
+    val hues = listOf(Color(0xFF3D9BFF), Color(0xFFFF535A), Color(0xFF21D07A), Color(0xFFFFB800), Color(0xFF9B6BFF))
+    Box(modifier.background(Brush.linearGradient(listOf(hues[seed % hues.size], hues[(seed + 2) % hues.size].copy(alpha = 0.6f)))))
+}
+
+@Composable
+private fun DemoViewer(onBack: () -> Unit) {
+    var chrome by remember { mutableStateOf(true) }
+    ViewerScaffold(
+        chromeVisible = chrome,
+        onBack = onBack,
+        title = "IMG_2041",
+        bottomBar = {
+            Row(Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+                PillButton("Share", onClick = {})
+                PillButton("Edit", onClick = {})
+                PillButton("Delete", onClick = {})
+            }
+        },
+    ) {
+        Zoomable(Modifier.fillMaxSize(), onTap = { chrome = !chrome }) {
+            DemoPhoto(1, Modifier.fillMaxWidth().aspectRatio(0.75f))
+        }
+    }
+}
+
+@Composable
+private fun KeypadSection() {
+    var display by remember { mutableStateOf("0") }
+    var pending by remember { mutableStateOf<String?>(null) }
+    fun type(digit: String) { display = if (display == "0") digit else display + digit }
+    val rows = listOf(
+        listOf("AC" to KeypadKeyStyle.Function, "±" to KeypadKeyStyle.Function, "%" to KeypadKeyStyle.Function, "÷" to KeypadKeyStyle.Operator),
+        listOf("7" to KeypadKeyStyle.Digit, "8" to KeypadKeyStyle.Digit, "9" to KeypadKeyStyle.Digit, "×" to KeypadKeyStyle.Operator),
+        listOf("4" to KeypadKeyStyle.Digit, "5" to KeypadKeyStyle.Digit, "6" to KeypadKeyStyle.Digit, "−" to KeypadKeyStyle.Operator),
+        listOf("1" to KeypadKeyStyle.Digit, "2" to KeypadKeyStyle.Digit, "3" to KeypadKeyStyle.Digit, "+" to KeypadKeyStyle.Operator),
+        listOf("0" to KeypadKeyStyle.Digit, "." to KeypadKeyStyle.Digit, "⌫" to KeypadKeyStyle.Function, "=" to KeypadKeyStyle.Primary),
+    )
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        SectionLabel("Keypad")
+        RollingText(display, style = ObsidianTheme.typography.numericLarge, color = ObsidianTheme.colors.textPrimary, modifier = Modifier.align(Alignment.End))
+        rows.forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                row.forEach { (label, style) ->
+                    KeypadKey(
+                        label = label,
+                        style = style,
+                        selected = pending == label,
+                        onClick = {
+                            when (style) {
+                                KeypadKeyStyle.Digit -> type(label)
+                                KeypadKeyStyle.Operator -> pending = label
+                                KeypadKeyStyle.Function -> if (label == "AC") { display = "0"; pending = null } else if (label == "⌫") display = display.dropLast(1).ifEmpty { "0" }
+                                KeypadKeyStyle.Primary -> pending = null
+                            }
+                        },
+                        modifier = Modifier.weight(1f).aspectRatio(1f),
+                    )
+                }
             }
         }
     }

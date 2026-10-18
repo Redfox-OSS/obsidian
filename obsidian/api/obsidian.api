@@ -16,6 +16,14 @@ public final class dev/redfox/obsidian/components/ButtonsKt {
 	public static final fun PrimaryButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;ZLandroidx/compose/runtime/Composer;II)V
 }
 
+public final class dev/redfox/obsidian/components/CollapsingHeaderKt {
+	public static final fun CollapsingHeader (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun getCollapsingHeaderExpandedHeight ()F
+	public static final fun rememberHeaderCollapse (Landroidx/compose/foundation/ScrollState;Landroidx/compose/runtime/Composer;I)Lkotlin/jvm/functions/Function0;
+	public static final fun rememberHeaderCollapse (Landroidx/compose/foundation/lazy/LazyListState;Landroidx/compose/runtime/Composer;I)Lkotlin/jvm/functions/Function0;
+	public static final fun rememberHeaderCollapse (Landroidx/compose/foundation/lazy/grid/LazyGridState;Landroidx/compose/runtime/Composer;I)Lkotlin/jvm/functions/Function0;
+}
+
 public final class dev/redfox/obsidian/components/CopyPillKt {
 	public static final fun CopyPill (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 }
@@ -29,6 +37,28 @@ public final class dev/redfox/obsidian/components/HeadersKt {
 	public static final fun LargeHeader (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getDetailHeaderHeight ()F
 	public static final fun getLargeHeaderHeight ()F
+}
+
+public final class dev/redfox/obsidian/components/KeypadKeyKt {
+	public static final fun KeypadKey (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ldev/redfox/obsidian/components/KeypadKeyStyle;ZLjava/lang/Integer;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class dev/redfox/obsidian/components/KeypadKeyStyle : java/lang/Enum {
+	public static final field Digit Ldev/redfox/obsidian/components/KeypadKeyStyle;
+	public static final field Function Ldev/redfox/obsidian/components/KeypadKeyStyle;
+	public static final field Operator Ldev/redfox/obsidian/components/KeypadKeyStyle;
+	public static final field Primary Ldev/redfox/obsidian/components/KeypadKeyStyle;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/redfox/obsidian/components/KeypadKeyStyle;
+	public static fun values ()[Ldev/redfox/obsidian/components/KeypadKeyStyle;
+}
+
+public final class dev/redfox/obsidian/components/ObSnackbarState {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun getCurrent ()Ldev/redfox/obsidian/components/SnackbarMessage;
+	public final fun show (Ljava/lang/String;Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun show$default (Ldev/redfox/obsidian/components/ObSnackbarState;Ljava/lang/String;Ljava/lang/String;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class dev/redfox/obsidian/components/ObSwitchKt {
@@ -48,6 +78,10 @@ public final class dev/redfox/obsidian/components/PagesKt {
 
 public final class dev/redfox/obsidian/components/ProgressBarKt {
 	public static final fun ObProgressBar (ZFLjava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class dev/redfox/obsidian/components/RadioButtonKt {
+	public static final fun ObRadioButton (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class dev/redfox/obsidian/components/SearchFieldKt {
@@ -79,6 +113,34 @@ public final class dev/redfox/obsidian/components/SelectionKt {
 public final class dev/redfox/obsidian/components/SheetsKt {
 	public static final fun ObSheet (Lkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun SheetAction (Ljava/lang/String;ILkotlin/jvm/functions/Function0;ZLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class dev/redfox/obsidian/components/SliderKt {
+	public static final fun ObSlider (FLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/ranges/ClosedFloatingPointRange;IZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class dev/redfox/obsidian/components/SnackbarKt {
+	public static final fun ObSnackbarHost-6a0pyJM (Ldev/redfox/obsidian/components/ObSnackbarState;Landroidx/compose/ui/Modifier;FLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class dev/redfox/obsidian/components/SnackbarMessage {
+	public static final field $stable I
+	public final fun dismiss ()V
+	public final fun getActionLabel ()Ljava/lang/String;
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun performAction ()V
+}
+
+public final class dev/redfox/obsidian/components/SnackbarResult : java/lang/Enum {
+	public static final field ActionPerformed Ldev/redfox/obsidian/components/SnackbarResult;
+	public static final field Dismissed Ldev/redfox/obsidian/components/SnackbarResult;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/redfox/obsidian/components/SnackbarResult;
+	public static fun values ()[Ldev/redfox/obsidian/components/SnackbarResult;
+}
+
+public final class dev/redfox/obsidian/components/SpinnerKt {
+	public static final fun ObSpinner-djqs-MU (Landroidx/compose/ui/Modifier;FFLjava/lang/String;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class dev/redfox/obsidian/components/SurfacesKt {
@@ -124,6 +186,14 @@ public final class dev/redfox/obsidian/components/SwitchSize : java/lang/Enum {
 	public static fun values ()[Ldev/redfox/obsidian/components/SwitchSize;
 }
 
+public final class dev/redfox/obsidian/components/TabsKt {
+	public static final fun ObTabRow (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class dev/redfox/obsidian/components/TextFieldKt {
+	public static final fun ObTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLjava/lang/Integer;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;Landroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/runtime/Composer;III)V
+}
+
 public final class dev/redfox/obsidian/effects/EffectsKt {
 	public static final fun ambientFloat-uFdPcIQ (Landroidx/compose/ui/Modifier;FILandroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
 	public static final fun breathingGlow-oIFW7jk (Landroidx/compose/ui/Modifier;JLandroidx/compose/ui/graphics/Shape;FFFILandroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
@@ -166,6 +236,37 @@ public final class dev/redfox/obsidian/effects/ObGlows {
 	public final fun getFab ()Ldev/redfox/obsidian/effects/GlowSpec;
 	public final fun getHalo ()Ldev/redfox/obsidian/effects/GlowSpec;
 	public final fun getSwitch ()Ldev/redfox/obsidian/effects/GlowSpec;
+}
+
+public final class dev/redfox/obsidian/effects/ShimmerKt {
+	public static final fun Placeholder (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;II)V
+	public static final fun shimmer (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
+}
+
+public final class dev/redfox/obsidian/media/MediaTileKt {
+	public static final fun MediaTile (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function0;ZZLjava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class dev/redfox/obsidian/media/ViewerScaffoldKt {
+	public static final fun ViewerScaffold (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class dev/redfox/obsidian/media/ZoomState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (FF)V
+	public synthetic fun <init> (FFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getDoubleTapScale ()F
+	public final fun getMaxScale ()F
+	public final fun getOffset-F1C5BW0 ()J
+	public final fun getScale ()F
+	public final fun isZoomed ()Z
+	public final fun reset (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/redfox/obsidian/media/ZoomableKt {
+	public static final fun Zoomable (Landroidx/compose/ui/Modifier;Ldev/redfox/obsidian/media/ZoomState;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberZoomState (FFLandroidx/compose/runtime/Composer;II)Ldev/redfox/obsidian/media/ZoomState;
 }
 
 public final class dev/redfox/obsidian/motion/MotionKt {
