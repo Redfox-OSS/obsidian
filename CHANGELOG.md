@@ -3,7 +3,7 @@
 Obsidian follows [semantic versioning](https://semver.org): a major version may break the API, minor
 versions add to it, and patch versions only fix things.
 
-## 2.0.0 (unreleased)
+## 2.0.0 (2026-10-18)
 
 The first release from this repository.
 
