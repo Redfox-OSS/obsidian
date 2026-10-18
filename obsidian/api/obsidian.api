@@ -368,10 +368,6 @@ public final class dev/redfox/obsidian/platform/ClipboardKt {
 	public static synthetic fun copyToClipboard$default (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)V
 }
 
-public final class dev/redfox/obsidian/showcase/ObsidianShowcaseKt {
-	public static final fun ObsidianShowcase (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-}
-
 public final class dev/redfox/obsidian/theme/ObShapes {
 	public static final field $stable I
 	public static final field INSTANCE Ldev/redfox/obsidian/theme/ObShapes;

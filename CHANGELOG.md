@@ -26,6 +26,10 @@ The first release from this repository.
 - Every public declaration now states its visibility and type (Kotlin explicit API mode). No
   declarations changed visibility.
 
+### Removed
+- `ObsidianShowcase` moved out of the library into the catalog app (`catalog/`), which shows every
+  token, component and transition on a phone. Apps that embedded it as a debug screen can drop it.
+
 ### Added
 - Components from Messages, made app-independent: `TabPage` and `DetailPage` screen layouts,
   `ObSheet` and `SheetAction`, `SwipeActionRow`, `ObAvatar` and `ObAvatarPair`, `CountBadge`,

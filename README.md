@@ -9,7 +9,7 @@ vivid accent, soft colored glows, frosted glass, and spring-driven motion you ca
 - **Motion:** shared springs, staggered entrances that never replay while scrolling, odometer digits, liquid selection indicators
 - **Components:** buttons, switch, checkbox, pills, segmented control, cards, list rows, frosted headers and page layouts, menus, dialogs, sheets, swipe rows, avatars, badges, progress and spinners, snackbars, text fields, sliders, radio buttons, tabs, a collapsing header, keypad keys, copy pill, search field, accent picker, empty state, and a floating nav bar that can go compact on scroll
 - **Media:** photo grid tiles with selection, pinch and double-tap zoom, and a full-screen viewer
-- **Style guide:** `ObsidianShowcase()` shows every token and component on one screen
+- **Catalog app:** every token, component, motion and transition on a phone, in [`catalog/`](catalog)
 
 The full reference (every value, motion spec and usage rule) is in **[docs/GUIDE.md](docs/GUIDE.md)**.
 
@@ -69,6 +69,18 @@ setContent {
 Read colors and type from `ObsidianTheme.colors` and `ObsidianTheme.typography`, not `MaterialTheme`. A matching
 Material 3 theme is installed too, so stock dialogs, menus and text fields blend in.
 
+## Catalog app
+
+`catalog/` is a small app that shows everything in Obsidian: tokens you can switch live (accent and
+neutrals), every component, the springs and entrances, real screen transitions with predictive back, a
+photo grid that opens into a zoomable viewer with a shared-element transition, and a calculator keypad.
+
+```bash
+./gradlew :catalog:installDebug
+```
+
+CI builds the catalog APK on every push; download it from the run's artifacts.
+
 ## Building
 
 ```bash
@@ -83,7 +95,7 @@ The build compiles the library, runs its tests and Android lint, and checks the 
 Issues and pull requests are welcome. Before you open a PR:
 
 - Follow the rules in [docs/GUIDE.md](docs/GUIDE.md): tokens only, springs for anything interactive, glows only on primary elements.
-- Add a new component to `ObsidianShowcase` so it can be checked by eye.
+- Add a new component to the catalog app (`catalog/`) so it can be checked by eye on a phone.
 - Run `./gradlew build`. If you changed the public API on purpose, record it with
   `./gradlew :obsidian:apiDump` and commit `obsidian/api/obsidian.api`; the build fails on any
   API change that isn't recorded there.

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A faceted obsidian shard in Crimson, centred in the 72dp safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:fillColor="#FFFF535A" android:pathData="M54,28 L74,48 L54,80 L34,48 Z" />
+    <path android:fillColor="#FFFFB3B0" android:pathData="M54,28 L74,48 L54,52 Z" />
+    <path android:fillColor="#FF5B000D" android:pathData="M34,48 L54,52 L54,80 Z" />
+</vector>

@@ -26,3 +26,4 @@ dependencyResolutionManagement {
 rootProject.name = "obsidian-root"
 
 include(":obsidian")
+include(":catalog")

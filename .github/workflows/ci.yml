@@ -33,6 +33,15 @@ jobs:
       - name: Publish to the local Maven repository
         run: ./gradlew :obsidian:publishToMavenLocal
 
+      - name: Build the catalog app
+        run: ./gradlew :catalog:assembleRelease
+
+      - name: Upload the catalog APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: obsidian-catalog
+          path: catalog/build/outputs/apk/release/*.apk
+
       - name: Upload lint report
         if: failure()
         uses: actions/upload-artifact@v4

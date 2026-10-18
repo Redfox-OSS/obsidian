@@ -8,7 +8,7 @@ that's interruptible everywhere.
 - **Artifact:** `dev.redfox:obsidian` · **package:** `dev.redfox.obsidian` · **min SDK** 31
 - **Depends on (exposed as `api`):** Compose BOM, Material 3, [Haze](https://github.com/chrisbanes/haze) 1.7.x
 - **Font:** Inter (variable TTF, bundled; OFL license in `assets/licenses/Inter-OFL.txt`)
-- **Living style guide:** `ObsidianShowcase()` — every token and component on one screen
+- **Catalog app:** `catalog/` in this repository: every token, component, motion and transition on a phone
 
 ```
 obsidian/src/main/java/dev/redfox/obsidian/
@@ -20,8 +20,7 @@ obsidian/src/main/java/dev/redfox/obsidian/
 │                 slider, radio, tabs, collapsing header, keypad key, accent picker, empty state
 ├── media/        MediaTile, Zoomable + ZoomState, ViewerScaffold
 ├── navigation/   FloatingNavBar (liquid indicator, per-icon motion, compact mode), rememberCompactNavState, floatingNavClearance()
-├── platform/     copyToClipboard
-└── showcase/     ObsidianShowcase
+└── platform/     copyToClipboard
 ```
 
 ---
@@ -304,7 +303,6 @@ Keep per-frame work in `graphicsLayer {}` / `placeWithLayer {}` lambdas (draw ph
 | `Zoomable(state, onTap) { }` / `rememberZoomState(maxScale, doubleTapScale)` | pinch zoom (1–5×) around the fingers, pan while zoomed, double-tap zoom; leaves 1× swipes to a pager (`state.isZoomed`) |
 | `ViewerScaffold(chromeVisible, onBack, title, actions, bottomBar) { }` | full-screen black viewer; top and bottom bars over gradients slide away when chrome is hidden |
 | `FloatingNavBar(items, selectedIndex, onSelect, compact, action, pill)` | frosted pill nav with a pill selection halo; optional compact mode (`rememberCompactNavState`), end action and side accent button; pad content by `floatingNavClearance()` |
-| `ObsidianShowcase(onAccentChange?)` | style guide screen |
 
 ## 9. Haptics
 
